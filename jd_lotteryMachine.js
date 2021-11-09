@@ -3,6 +3,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 const notify = $.isNode() ? require('./sendNotify') : '';
 let cookiesArr = [];
 const activityList = [
+    {'appId': '1FFdSxqw', 'endTime': 1637423999000,'name':'烯新带电生活'},//京东赚赚小程序
     {'appId': '1FFVQyqw', 'endTime': 1666344063000,'name':'1111点心动'},//京东APP--》玩一玩---》1111点心动
     {'appId': '1FFRWwqg', 'endTime': 1636646399000,'name':'???'},
     {'appId': '1FV1ZwKY', 'endTime': 1636775829000,'name':'好物好生活'},//京东APP--》玩一玩---》好物好生活
