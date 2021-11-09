@@ -58,6 +58,8 @@
 10 9,13,16,19,20 2-8 11 * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1
 # 星推官
 0 0 * * * node /scripts/jd_xtg.js >> /scripts/logs/jd_xtg.log 2>&1
+# 主会场红包雨（11.1-11.11日的20-23点）
+0 20-23 1-11 11 *  node /scripts/jd_hby.js >> /scripts/logs/jd_hby.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
