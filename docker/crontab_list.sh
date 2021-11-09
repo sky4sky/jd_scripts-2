@@ -48,8 +48,6 @@
 0 0-23/6 * * * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
 # 京东超级盒子（2021年10月25日～2021年11月11日）
 0 0,2,21,22 * * * node /scripts/jd_super_box.js >> /scripts/logs/jd_super_box.log 2>&1
-# 电竞预言家（2021年10月22日～2021年11月6日）
-0 0,11,15,17 * * * node /scripts/jd_champion_game.js >> /scripts/logs/jd_champion_game.log 2>&1
 # 限时抢京豆（2021-10-20到2021-11-20）
 23 2,3 * * * node /scripts/jd_xsqjd.js >> /scripts/logs/jd_xsqjd.log 2>&1
 # 京东双十一京享红包
