@@ -58,12 +58,12 @@ inputs:
           cronExpression: "0 8 */3 * * * *"
           enable: true
           argument: jd_daily_egg&jd_jxmc&jd_joy_park_merge&jd_jxbfd_collect&jx_rebate&jd_health_collect
-    - timer: #东东超市 #十元街 #财富岛热气球 #京喜财富岛合月饼
+    - timer: #东东超市 #十元街 #财富岛热气球 #京喜财富岛合月饼 #主会场红包雨
         parameters:
-          name: superMarket_syj_jxbfdballoon_jxbfdpeargame
+          name: superMarket_syj_jxbfdballoon_jxbfdpeargame_hby
           cronExpression: "0 15 */1 * * * *"
           enable: true
-          argument: jd_superMarket&jd_syj&jd_jxbfd_balloon&jd_jxbfd_pear_game
+          argument: jd_superMarket&jd_syj&jd_jxbfd_balloon&jd_jxbfd_pear_game&jd_hby
     - timer: #京豆变动通知 #京东排行榜 #领京豆额外奖励 #京东到家鲜豆任务 #京东会员卡 #京东保价 #芥么小程序签到领现金 #伊利养牛 #清风云养树 #选品官
         parameters:
           name: beanchange_rankingList_beanhome_jddjdailyTask_unbind_price_jmsign_cow_tree_selectionOfficer
