@@ -1,6 +1,6 @@
 /*
-东东水果:脚本更新地址 jd_fruit.js
-更新时间：2021-7-12
+东东水果
+更新时间：2021-11-9
 活动入口：京东APP我的-更多工具-东东农场
 东东农场活动链接：https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -226,9 +226,9 @@ async function doDailyTask() {
   //   getExtraAward(),//领取额外水滴奖励
   //   turntableFarm()//天天抽奖得好礼
   // ])
-  await getAwardInviteFriend();
-  await clockInIn();//打卡领水
-  await executeWaterRains();//水滴雨
+  // await getAwardInviteFriend();
+  // await clockInIn();//打卡领水
+  // await executeWaterRains();//水滴雨
   await getExtraAward();//领取额外水滴奖励
   await turntableFarm()//天天抽奖得好礼
 }
@@ -582,35 +582,40 @@ async function turntableFarm() {
 }
 //领取额外奖励水滴
 async function getExtraAward() {
-  await masterHelpTaskInitForFarm();
-  if ($.masterHelpResult.code === '0') {
-    if ($.masterHelpResult.masterHelpPeoples && $.masterHelpResult.masterHelpPeoples.length >= 5) {
-      // 已有五人助力。领取助力后的奖励
-      if (!$.masterHelpResult.masterGotFinal) {
-        await masterGotFinishedTaskForFarm();
-        if ($.masterGotFinished.code === '0') {
-          console.log(`已成功领取好友助力奖励：【${$.masterGotFinished.amount}】g水`);
-          message += `【额外奖励】${$.masterGotFinished.amount}g水领取成功\n`;
-        }
-      } else {
-        console.log("已经领取过5好友助力额外奖励");
-        message += `【额外奖励】已被领取过\n`;
-      }
-    } else {
-      console.log("助力好友未达到5个");
-      message += `【额外奖励】领取失败,原因：给您助力的人未达5个\n`;
+  await farmAssistInit();
+  if ($.masterHelpResult && $.masterHelpResult.code === '0') {
+    const { f, status, hasAssistFull, assistStageList = [], assistFriendList = [] } = $.masterHelpResult;
+    console.log(`\n当前助力人数：${assistFriendList.length}个，${hasAssistFull ? '助力已满' : '可继续邀请好友助力'}`)
+    for (const item of assistStageList) {
+      console.log(`第${item['stage']}阶段助力奖励：${item['waterEnergy']}g水滴 ${item['stageStaus'] === 1 ? '未达标' : item['stageStaus'] === 2 ? '可领取' : item['stageStaus'] === 3 ? '已领取' : ''}（需${item['assistNum']}人助力）`)
     }
-    if ($.masterHelpResult.masterHelpPeoples && $.masterHelpResult.masterHelpPeoples.length > 0) {
+    if (f && status === 3) {
+      console.log(`已经领取过${assistFriendList.length}好友助力额外奖励\n`);
+      message += `【额外奖励】已被领取\n`;
+    } else {
+      for (const item of assistStageList) {
+        if (item['stageStaus'] === 2) {
+          await receiveStageEnergy();
+          if ($.masterGotFinished && $.masterGotFinished.code === '0') {
+            console.log(`领取好友助力奖励成功：【${$.masterGotFinished.amount}】g水`);
+            message += `【额外奖励】${$.masterGotFinished.amount}g水领取成功\n`;
+          } else {
+            console.log(`额外水滴奖励领取失败：${$.toStr($.masterGotFinished)}\n`)
+          }
+        }
+      }
+    }
+    if (assistFriendList && assistFriendList.length > 0) {
       let str = '';
-      $.masterHelpResult.masterHelpPeoples.map((item, index) => {
-        if (index === ($.masterHelpResult.masterHelpPeoples.length - 1)) {
+      assistFriendList.map((item, index) => {
+        if (index === (assistFriendList.length - 1)) {
           str += item.nickName || "匿名用户";
         } else {
           str += (item.nickName || "匿名用户") + ',';
         }
         let date = new Date(item.time);
         let time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getMinutes();
-        console.log(`\n京东昵称【${item.nickName || "匿名用户"}】 在 ${time} 给您助过力\n`);
+        console.log(`京东昵称【${item.nickName || "匿名用户"}】 在 ${time} 给您助过力`);
       })
       message += `【助力您的好友】${str}\n`;
     }
@@ -1050,14 +1055,14 @@ async function lotteryMasterHelp() {
 }
 
 //领取5人助力后的额外奖励API
-async function masterGotFinishedTaskForFarm() {
+async function receiveStageEnergy() {
   const functionId = arguments.callee.name.toString();
-  $.masterGotFinished = await request(functionId);
+  $.masterGotFinished = await request(functionId, {"version":14,"channel":1,"babelChannel":0});
 }
 //助力好友信息API
-async function masterHelpTaskInitForFarm() {
+async function farmAssistInit() {
   const functionId = arguments.callee.name.toString();
-  $.masterHelpResult = await request(functionId);
+  $.masterHelpResult = await request(functionId, {"version":14,"channel":1,"babelChannel":0});
 }
 //接受对方邀请,成为对方好友的API
 async function inviteFriend() {
@@ -1393,7 +1398,7 @@ function shareCodesFormat() {
       const tempIndex = $.index > shareCodes.length ? (shareCodes.length - 1) : ($.index - 1);
       newShareCodes = shareCodes[tempIndex].split('@');
     }
-    const readShareCodeRes = await readShareCode();
+    const readShareCodeRes = {};
     if (readShareCodeRes && readShareCodeRes.code === 200) {
       // newShareCodes = newShareCodes.concat(readShareCodeRes.data || []);
       newShareCodes = [...new Set([...newShareCodes, ...(readShareCodeRes.data || [])])];
