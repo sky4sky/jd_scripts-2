@@ -79,7 +79,7 @@ if ($.isNode()) {
 
 async function jsRedPacket() {
   try {
-    await invite();
+    // await invite();
     await sign();//极速版签到提现
     await reward_query();
     for (let i = 0; i < 3; ++i) {
@@ -106,7 +106,7 @@ async function sign() {
     const body = {"linkId":signLinkId,"serviceName":"dayDaySignGetRedEnvelopeSignService","business":1};
     const options = {
       url: `https://api.m.jd.com`,
-      body: `functionId=apSignIn_day&body=${escape(JSON.stringify(body))}&_t=${+new Date()}&appid=activities_platform`,
+      body: `functionId=apSignIn_day&body={"linkId":"9WA12jYGulArzWS7vcrwhw","serviceName":"dayDaySignGetRedEnvelopeSignService","business":1}&t=1636521104211&appid=activities_platform&client=H5&clientVersion=1.0.0&h5st=20211110131144223%3B9052474173417230%3B15097%3Btk02w9cdd1bef18nWdPqOcG%2FPlMw5xgR%2BJ17sIDjQvldIPevPaMWw0%2B7YFjoHNDMgsO%2FmB%2B10wfalltzi3SU9laZgc9H%3B0cf20298e3dd1b3675e2343a2cef836455a54e1e189af25be8592d4cc119e90a%3B3.0%3B1636521104223`,
       headers: {
         'Cookie': cookie,
         "Host": "api.m.jd.com",
@@ -199,7 +199,7 @@ async function redPacket() {
                     console.log("获得优惠券")
                   }
                 } else {
-                  console.log('spring_reward_receive 异常' + $.toStr(data))
+                  console.log('领红包提现失败：' + $.toStr(data))
                 }
               }
             }
