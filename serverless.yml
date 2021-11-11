@@ -28,12 +28,12 @@ inputs:
           cronExpression: "0 0 0 * * * *"
           enable: true
           argument: jd_blueCoin&jd_club_lottery&jd_car_exchange&jd_health_exchange&jd_jsg&jd_xjdSign&jd_xtg
-    - timer: #东东农场 #东东萌宠 #口袋书店 #京喜农场 #京东极速版签到 #金榜创造营 #美食馆瓜分京豆 #特务Z #手机狂欢城 #手机狂欢城-助力 #vivo活动
+    - timer: #东东农场 #东东萌宠 #口袋书店 #京喜农场 #京东极速版签到 #金榜创造营 #美食馆瓜分京豆 #特务Z #手机狂欢城 #手机狂欢城-助力 #vivo活动 #逛好物赚京豆
         parameters:
-          name: fruit_pet_bookshop_jxnc_speedsign_goldcreator_foodRunning_productBrand_carnivalcity_carnivalcityhelp_vivo
+          name: fruit_pet_bookshop_jxnc_speedsign_goldcreator_foodRunning_productBrand_carnivalcity_carnivalcityhelp_vivo_ifanli
           cronExpression: "0 5 6-18/6,8 * * * *"
           enable: true
-          argument: jd_fruit&jd_pet&jd_bookshop&jd_jxnc&jd_speed_sign&jd_gold_creator&jd_foodRunning&jd_productBrand&jd_carnivalcity&jd_carnivalcity_help&jd_vivo
+          argument: jd_fruit&jd_pet&jd_bookshop&jd_jxnc&jd_speed_sign&jd_gold_creator&jd_foodRunning&jd_productBrand&jd_carnivalcity&jd_carnivalcity_help&jd_vivo&jd_ifanli
     - timer: #摇钱树 #京东种豆得豆 #京喜工厂 #东东工厂 #京东到家农场收集水车水滴 #京东到家鲜豆庄园收水车水滴 #蒙牛养牛 #发财大赢家之翻翻乐
         parameters:
           name: moneyTree_plantBean_dreamFactory_jdfactory_jddjfruitcollect_jddjplantBeanscollect_cowmengniu_bigwinner
