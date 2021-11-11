@@ -14,7 +14,7 @@
 
 仅限node是用，每次查询时间间隔不能小于10分钟
 
-cron 0 2 * * * jd_price.js
+cron 0 22 * * * jd_price.js
  */
 
 const $ = new Env('京东保价');
@@ -28,7 +28,10 @@ if ($.isNode()) {
   if (process.env.JD_DEBUG && process.env.JD_DEBUG === 'false') console.log = () => {};
   console.error = function() {}
 } else {
-  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
+  cookiesArr = [
+    $.getdata("CookieJD"),
+    $.getdata("CookieJD2"),
+    ...$.toObj($.getdata("CookiesJD") || "[]").map((item) => item.cookie)].filter((item) => !!item);
 }
 
 !(async () => {
@@ -73,7 +76,9 @@ if ($.isNode()) {
         }********\n`
       );
       try {
+        $.token = '';
         await jstoken();
+        if (!$.token) return
         await skuApply();
         await showMsg();
       } catch (e) {
@@ -88,11 +93,11 @@ if ($.isNode()) {
   .finally(() => $.done());
 
 //  一键申请保价
-function skuApply(order) {
+function skuApply() {
   return new Promise((resolve, reject) => {
     let paramObj = {
       sid: '',
-      type: 3,
+      type: '25',
       forcebot: '',
       token: $.token,
       feSt: 's'
@@ -109,8 +114,8 @@ function skuApply(order) {
           console.log(`一键保价申请结果：`, data);
           data = JSON.parse(data);
           if (data && data.flag) {
-            console.log(`一键保价申请成功，等待10秒后查询结果！`);
-            await $.wait(10 * 1000);
+            console.log(`一键保价申请成功，等待20秒后查询结果！`);
+            await $.wait(20 * 1000);
             await getApplyResult();
           } else {
             console.log(`🚫 一键保价 申请失败：${data && data.responseMessage}`);
@@ -206,6 +211,7 @@ async function jstoken() {
     referrer: "https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu",
   });
   const options = {
+    url: "https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu",
     referrer: "https://msitepp-fm.jd.com/rest/priceprophone/priceProPhoneMenu",
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0) Gecko/20100101 Firefox/91.0',
     runScripts: "dangerously",
@@ -272,22 +278,6 @@ function totalBean() {
       }
     });
   });
-}
-
-function jsonParse(str) {
-  if (typeof str == 'string') {
-    try {
-      return JSON.parse(str);
-    } catch (e) {
-      console.log(e);
-      $.msg(
-        $.name,
-        '',
-        '请勿随意在BoxJs输入框修改内容\n建议通过脚本去获取cookie'
-      );
-      return [];
-    }
-  }
 }
 // https://github.com/chavyleung/scripts/blob/master/Env.js
 // prettier-ignore
