@@ -3,7 +3,7 @@
 1、脚本只执行助力和做1个任务,需要手动进活动进行游戏
 2、每个账号每天2次助力好友的机会
 3、所有的账号先助力自己的第一个CK，剩下的一次助力会助力作者。
-40 12,16,22 * * * jd_fcwb.js
+40 6,12,16,22 * * * jd_fcwb.js
 * * */
 const $ = new Env('发财挖宝');
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';

@@ -42,24 +42,8 @@
 15 4,15 * * * node /scripts/jd_tree.js >> /scripts/logs/jd_tree.log 2>&1
 # 选品官 2021年11月14日结束
 20 0,21 * * * node /scripts/jd_selectionOfficer.js >> /scripts/logs/jd_selectionOfficer.log 2>&1
-# 手机狂欢城(2021-10-23至2021-11-13)
-0 0-18/6 * * * node /scripts/jd_carnivalcity.js >> /scripts/logs/jd_carnivalcity.log 2>&1
-# 手机狂欢城-助力(2021-10-23至2021-11-13)
-0 0-23/6 * * * node /scripts/jd_carnivalcity_help.js >> /scripts/logs/jd_carnivalcity_help.log 2>&1
-# 京东超级盒子（2021年10月25日～2021年11月11日）
-0 0,2,21,22 * * * node /scripts/jd_super_box.js >> /scripts/logs/jd_super_box.log 2>&1
 # 限时抢京豆（2021-10-20到2021-11-20）
 23 2,3 * * * node /scripts/jd_xsqjd.js >> /scripts/logs/jd_xsqjd.log 2>&1
-# 京东双十一京享红包
-0 3,12,23 * * * node /scripts/jd_doubleElevenRed.js >> /scripts/logs/jd_doubleElevenRed.log 2>&1
-#发财挖宝
-20 12,16,22 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
-# 双11特务 11.8日结束
-10 9,13,16,19,20 2-8 11 * node /scripts/jd_superBrand.js >> /scripts/logs/jd_superBrand.log 2>&1
-# 星推官
-0 0 * * * node /scripts/jd_xtg.js >> /scripts/logs/jd_xtg.log 2>&1
-# 主会场红包雨（11.1-11.11日的20-23点）
-0 20-23 1-11 11 *  node /scripts/jd_hby.js >> /scripts/logs/jd_hby.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
@@ -199,3 +183,5 @@
 15 9 * * 5 node /scripts/jd_clear_cart.js >> /scripts/logs/jd_clear_cart.log 2>&1
 # 逛好物，赚京豆
 1 0,12,18,22 * * * node /scripts/jd_ifanli.js >> /scripts/logs/jd_ifanli.log 2>&1
+#发财挖宝
+20 6,12,16,22 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1

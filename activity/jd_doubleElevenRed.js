@@ -4,8 +4,8 @@ https://u.jd.com/3IXBgiv
 0 3,12,23 * * * jd_doubleElevenRed.js
 */
 const $ = new Env('京东双十一京享红包');
-const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
-const notify = $.isNode() ? require('./sendNotify') : '';
+const jdCookieNode = $.isNode() ? require('../jdCookie.js') : '';
+const notify = $.isNode() ? require('../sendNotify') : '';
 // const Faker = require('./utils/jd_sign_validate.js')
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
