@@ -21,61 +21,25 @@ cron "0,30 0-23/1 * * *" script-path=jd_live_redrain.js,tag=超级直播间红�
 const $ = new Env('超级直播间红包雨');
 let allMessage = '', id = 'RRA2cUocg5uYEyuKpWNdh4qE4NW1bN2';
 let bodyList = {
-  "1": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228881064&sign=337caef0334f026c50e8e295809457e5&sv=121",
-    "body": "body=%7B%22liveId%22%3A%225691936%22%7D"
-  },
-  "2": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228906032&sign=8c8511f7fabfb3f3ad4219dec6f56a20&sv=122",
-    "body": "body=%7B%22liveId%22%3A%225691952%22%7D"
-  },
-  "3": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228880057&sign=80608a922d2a8795755587c6f27ea796&sv=111",
-    "body": "body=%7B%22liveId%22%3A%225691968%22%7D"
-  },
-  "4": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228897074&sign=db41c8ad2ab56b6ae950d410c2224b52&sv=101",
-    "body": "body=%7B%22liveId%22%3A%225703225%22%7D"
-  },
-  "5": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228892099&sign=60051d1725fea536fec67155120eca63&sv=112",
-    "body": "body=%7B%22liveId%22%3A%225691982%22%7D"
-  },
-  "6": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228886026&sign=710ee7d33b2e801e3803b6126e946412&sv=102",
-    "body": "body=%7B%22liveId%22%3A%225691989%22%7D"
-  },
-  "9": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228888033&sign=ff45408406e75fc5b48e7ff2d6c2acf9&sv=100",
-    "body": "body=%7B%22liveId%22%3A%225695933%22%7D"
-  },
-  "10": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228915092&sign=d2f50e9a48358201777b4797267ff7b3&sv=101",
-    "body": "body=%7B%22liveId%22%3A%225695972%22%7D"
-  },
-  "11": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228914088&sign=2535007524bd0ff9830c1436bba4b9fd&sv=111",
-    "body": "body=%7B%22liveId%22%3A%225695994%22%7D"
-  },
   "12": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228910023&sign=0f42e78adb693bdcce85bab505ffc959&sv=121",
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1636697402078&sign=594e0a5b28a9d58ce1c5ba9aa56683ed&sv=120",
     "body": "body=%7B%22liveId%22%3A%225696005%22%7D"
   },
   "16": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228905030&sign=4e17a31a21765f5616531e203862218c&sv=120",
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1636697409069&sign=1e6362806cf84c97c5351c903844a70b&sv=101",
     "body": "body=%7B%22liveId%22%3A%225696019%22%7D"
   },
-  "26": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228909021&sign=8ad1cedd35b702eb1365ce4f80c3733b&sv=120",
-    "body": "body=%7B%22liveId%22%3A%225490451%22%7D"
+  "19": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1636697406076&sign=3ca6fc5d1893d5ed5d6b8ec8effeeb77&sv=110",
+    "body": "body=%7B%22liveId%22%3A%225975904%22%7D"
   },
-  "29": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228875083&sign=6252783e243673fca2aa57b463810d52&sv=112",
-    "body": "body=%7B%22liveId%22%3A%225489315%22%7D"
+  "23": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1636697412060&sign=e5006b2a32f5076bcc51fb9c35a269e6&sv=122",
+    "body": "body=%7B%22liveId%22%3A%225933512%22%7D"
   },
-  "31": {
-    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1635228900064&sign=f9699b9da838ffd7d56425dac67e20b6&sv=121",
-    "body": "body=%7B%22liveId%22%3A%225639158%22%7D"
+  "30": {
+    "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1636697403086&sign=596656ac6ee5f90ecf7bbbbf75d9692a&sv=122",
+    "body": "body=%7B%22liveId%22%3A%225933519%22%7D"
   }
 }
 let ids = {}
