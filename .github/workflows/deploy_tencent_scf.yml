@@ -86,7 +86,6 @@ jobs:
       SHELL_WAIT_TIME: ${{ secrets.SHELL_WAIT_TIME}}
       DDEXCHANGE: ${{ secrets.DDEXCHANGE}}
       JD_CART: ${{ secrets.JD_CART}}
-      rightAnswerCode: ${{ secrets.rightAnswerCode}}
       BYTYPE: ${{ secrets.BYTYPE}}
       
     steps:
@@ -188,7 +187,6 @@ jobs:
           if [ $SHELL_WAIT_TIME ]; then sed -i "/variables/a\      SHELL_WAIT_TIME: $SHELL_WAIT_TIME" serverless.yml; fi;
           if [ $DDEXCHANGE ]; then sed -i "/variables/a\      DDEXCHANGE: $DDEXCHANGE" serverless.yml; fi;
           if [ $JD_CART ]; then sed -i "/variables/a\      JD_CART: $JD_CART" serverless.yml; fi;
-          if [ $rightAnswerCode ]; then sed -i "/variables/a\      rightAnswerCode: $rightAnswerCode" serverless.yml; fi;
           if [ $BYTYPE ]; then sed -i "/variables/a\      BYTYPE: $BYTYPE" serverless.yml; fi;
           cat serverless.yml
           env
