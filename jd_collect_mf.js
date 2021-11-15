@@ -146,7 +146,10 @@ async function main() {
             }
         }
         if ($.blockAccount) return
+        //碎片兑换成魔方
         await queryInteractiveInfo($.projectId, true);
+        //魔方兑换京豆
+        await queryInteractiveRewardInfo();
     } catch (e) {
         $.logErr(e)
     }
@@ -190,7 +193,38 @@ function doInteractiveAssignment(projectId, encryptAssignmentId, itemId, actionT
         })
     })
 }
-
+async function queryInteractiveRewardInfo() {
+  return new Promise(async (resolve) => {
+    let body = { "encryptProjectId": $.giftProjectId, "sourceCode": 'acexinpin0823', "ext": { "needExchangeRestScore": "1" } }
+    $.post(taskPostUrl("queryInteractiveRewardInfo", body), async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`queryInteractiveRewardInfo API请求失败，请检查网路重试`)
+        } else {
+          data = $.toObj(data);
+          if (data && data.code === '0' && data.subCode === '0') {
+            sum = data.exchangeRestScoreMap['367'];
+            console.log(`\n当前魔方${sum}个，暂不符合兑换条件`);
+            $.msg($.name, `账号 ${$.index} ${$.UserName}\n当前已有魔方：${sum}个`);
+            if (sum >= 5) {
+              const canDrawAwardNum = Math.floor(sum / 5);
+              console.log(`\n当前共魔方：${sum}个，开始消耗5魔方去兑换奖品，可兑换${canDrawAwardNum}次`)
+              for (let i = 0; i < new Array(canDrawAwardNum).fill('').length; i++) {
+                await doInteractiveAssignment($.giftProjectId, '3Qia2BF8oxZWEFsNdAEAuZsTXHqA', "", "", {"exchangeNum":1})
+                await $.wait(2000);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data)
+      }
+    })
+  })
+}
 function queryInteractiveInfo(projectId, reward = false) {
     let body = {"encryptProjectId": projectId, "sourceCode": "acexinpin0823", "ext": {}};
     if (reward) body = {"encryptProjectId": $.giftProjectId,"sourceCode":"acexinpin0823","ext":{"couponUsableGetSwitch":"1"}}
@@ -210,7 +244,6 @@ function queryInteractiveInfo(projectId, reward = false) {
                                 const item2 = $.taskList.filter(vo => vo['assignmentName'] !== '魔方');
                                 if (item && item[0]) {
                                     const { completionCnt = 0, encryptAssignmentId } = item[0];
-                                    $.msg($.name, `账号 ${$.index} ${$.UserName}\n当前已有魔方：${completionCnt}个`);
                                     $.completionCnt = completionCnt || 0;
                                     console.log(`\n开始碎片兑换成魔方`)
                                     await doInteractiveAssignment($.giftProjectId, encryptAssignmentId, "", "", {"exchangeNum":1})
@@ -223,14 +256,6 @@ function queryInteractiveInfo(projectId, reward = false) {
                                             console.log(`${reward['rewardName']}`)
                                         }
                                     }
-                                }
-                                if ($.completionCnt >= 5) {
-                                  const canDrawAwardNum = Math.floor($.completionCnt / 5);
-                                  console.log(`\n当前共魔方：${$.completionCnt}个，开始消耗5魔方去兑换奖品，可兑换${canDrawAwardNum}次`)
-                                  for (let i = 0; i < new Array(canDrawAwardNum).fill('').length; i++) {
-                                    await doInteractiveAssignment($.giftProjectId, '3Qia2BF8oxZWEFsNdAEAuZsTXHqA', "", "", {"exchangeNum":1})
-                                    await $.wait(2000);
-                                  }
                                 }
                             } else {
                                 console.log(`任务列表获取成功！\n`)
