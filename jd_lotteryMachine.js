@@ -5,6 +5,7 @@ let cookiesArr = [];
 const activityList = [
     {'appId': '1FFdSxqw', 'endTime': 1637423999000,'name':'烯新带电生活'},//京东赚赚小程序
     {'appId': '1FFVQyqw', 'endTime': 1666344063000,'name':'1111点心动'},//京东APP--》玩一玩---》1111点心动
+    {'appId': '1FFRWwqg', 'endTime': 1638285803000,'name':'心动电波'},//https://h5.m.jd.com/babelDiy/Zeus/rAkfmGU5bg1rHa9kPnDre7Znru7/index.html
     {'appId': '1FFRWwqg', 'endTime': 1636646399000,'name':'???'},
     {'appId': '1FV1ZwKY', 'endTime': 1636775829000,'name':'好物好生活'},//京东APP--》玩一玩---》好物好生活
     {'appId': '1FFRWxaY', 'endTime': 1636603133000,'name':'送你超能力'},//京东APP--》玩一玩---》送你超能力

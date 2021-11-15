@@ -226,15 +226,15 @@ function goldCenterHead() {
               if (taskDone === 1) {
                 console.log(`你已点亮过勋章了，请明日继续！`)
               } else {
-                await goldCenterDoTask();//金榜签到，首页-排行榜-金榜
-                if (medalNum && medalNum >= 5) {
-                  if (bingoDone === 0) {
-                    console.log(`勋章已有5枚，开始抽盲盒`)
-                    await $.wait(1000)
-                    await goldCenterDoTask(2)
-                  } else {
-                    console.log(`已抽过盲盒`)
-                  }
+                await goldCenterDoTask(1);//金榜签到，首页-排行榜-金榜
+              }
+              if (medalNum && medalNum >= 5) {
+                if (bingoDone === 0) {
+                  console.log(`勋章已有5枚，开始抽盲盒`)
+                  await $.wait(1000)
+                  await goldCenterDoTask(2)
+                } else {
+                  console.log(`今日已抽过盲盒`)
                 }
               }
             } else {
