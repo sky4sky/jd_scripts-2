@@ -1,5 +1,7 @@
 /*
 * 每日跑2次
+* 默认不加购物车
+* 环境变量PURCHASE_SHOPS为true则完成加购物车的任务
 31 3,4 1-30 11 * jd_meidi.js
 * */
 const $ = new Env('奔跑的小美');
@@ -94,6 +96,7 @@ async function main(cookie) {
             continue;
         }
         if($.oneTask.taskid === 'scansku' || $.oneTask.taskid === 'add2cart'){
+            if ($.oneTask.taskid === 'add2cart' && !process.env.PURCHASE_SHOPS) continue
             console.log(`任务：${$.oneTask.taskname},去执行`);
             let productList = [];
             if($.oneTask.taskid === 'scansku'){
