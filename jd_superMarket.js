@@ -80,6 +80,7 @@ async function jdSuperMarket() {
   try {
     await smtg_newHome(0);//经典超市
     await smtg_newHome(1);//限时超市
+    await smtg_receiveBranchShopPrize();
     // await receiveGoldCoin();//收金币
     // await businessCircleActivity();//商圈活动
     // await receiveBlueCoin();//收蓝币（小费）
@@ -223,7 +224,38 @@ function smtgHome() {
     })
   })
 }
-
+function smtg_receiveBranchShopPrize(timeout = 0) {
+  return new Promise((resolve) => {
+    setTimeout( ()=>{
+      const body = {"channel":"18"}
+      const op = {
+        url: `${JD_API_HOST}?functionId=smtg_receiveBranchShopPrize&appid=jdsupermarket&clientVersion=8.0.0&client=m&eid=&body=${escape(JSON.stringify(body))}&t=${Date.now()}`,
+        headers: {
+          'User-Agent': $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+          'Host': 'api.m.jd.com',
+          'Cookie': cookie,
+          'Referer': 'https://jdsupermarket.jd.com/game',
+          'Origin': 'https://jdsupermarket.jd.com',
+        },
+        timeout: 1000 * 10
+      }
+      $.get(op, async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log('\n东东超市: API查询请求失败 ‼️‼️')
+            console.log(JSON.stringify(err));
+          } else {
+            console.log('限时超市领取京豆奖励结果：', data);
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve()
+        }
+      })
+    },timeout)
+  })
+}
 function smtg_newHome(shopType = 0, timeout = 0) {
   return new Promise((resolve) => {
     setTimeout( ()=>{
