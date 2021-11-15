@@ -44,6 +44,8 @@
 20 0,21 * * * node /scripts/jd_selectionOfficer.js >> /scripts/logs/jd_selectionOfficer.log 2>&1
 # 限时抢京豆（2021-10-20到2021-11-20）
 23 2,3 * * * node /scripts/jd_xsqjd.js >> /scripts/logs/jd_xsqjd.log 2>&1
+# 奔跑的小美
+31 3,4 1-30 11 * node /scripts/jd_meidi.js >> /scripts/logs/jd_meidi.log 2>&1
 ##############长期活动##############
 # 签到
 7 0,17 * * * cd /scripts && node jd_bean_sign.js >> /scripts/logs/jd_bean_sign.log 2>&1
