@@ -1,8 +1,9 @@
 /*
-发财挖宝: 入口,极速版-我的,发财挖宝
+发财挖宝
+入口：极速版-我的,发财挖宝
 1、脚本只执行助力和做1个任务,需要手动进活动进行游戏
-2、每个账号每天2次助力好友的机会
-3、所有的账号先助力自己的第一个CK，剩下的一次助力会助力作者。
+2、每个账号每天1次助力好友的机会
+3、如需自己内部账号助力，请添加环境变量 FCWB_HELP为true，否则会助力作者。
 40 6,12,16,22 * * * jd_fcwb.js
 * * */
 const $ = new Env('发财挖宝');
@@ -30,10 +31,11 @@ let res = [];
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
-  console.log('发财挖宝: 入口,极速版-我的,发财挖宝\n' +
+  console.log('发财挖宝\n' +
+      '入口：极速版-我的,发财挖宝\n' +
       '1、脚本只执行助力和做1个任务,需要手动进活动进行游戏\n' +
-      '2、每个账号每天2次助力好友的机会\n' +
-      '3、所有的账号先助力自己的第一个CK，剩下的一次助力会助力作者。')
+      '2、每个账号每天1次助力好友的机会\n' +
+      '3、如需自己内部账号助力，请添加环境变量 FCWB_HELP为true，否则会助力作者。')
   try {
     res = await getAuthorShareCode();
   } catch (e) {
@@ -106,14 +108,14 @@ async function main() {
     const HelpInfo = await takeRequest(`happyDigHelp`, `{"linkId":"${link}","inviter":"${fcwbinviter}","inviteCode":"${fcwbinviteCode}"}`);
   }
   $.freshFlag = false;
-  if ($.index === 1) {
+  if ($.index === 1 && process.env.FCWB_HELP && process.env.FCWB_HELP === 'true') {
     const shareCodes = {
       "fcwbinviter": homeInfo.markedPin,
       "fcwbinviteCode": homeInfo.inviteCode,
     }
     $.shareCodes = [...[shareCodes], ...res]
-    // fcwbinviter = homeInfo.markedPin;
-    // fcwbinviteCode = homeInfo.inviteCode;
+  } else {
+    $.shareCodes = res;
   }
   await doTask();
   if ($.freshFlag) {
@@ -122,6 +124,10 @@ async function main() {
   }
   let blood = homeInfo.blood;
   console.log(`当前有${blood}滴血`);
+  if ($.index === 1 && !process.env.FCWB_HELP) {
+    $.msg($.name, '', `账号 ${$.index} ${$.UserName}\n当前生命值：${blood}滴血，需手动去活动页面完成游戏\n活动入口：极速版APP->我的->发财挖宝\n如需自己内部账号助力，请添加环境变量 FCWB_HELP为true`);
+    if ($.isNode()) await notify.sendNotify($.name, `账号 ${$.index} ${$.UserName}\n当前生命值：${blood}滴血，需手动去活动页面完成游戏\n活动入口：极速版APP->我的->发财挖宝\n如需自己内部账号助力，请添加环境变量 FCWB_HELP为true`)
+  }
 }
 
 async function doTask() {
@@ -133,23 +139,27 @@ async function doTask() {
       continue;
     }
     if (oneTask.taskType === 'BROWSE_CHANNEL') {
-      if (oneTask.id === 360) {
+      if (oneTask.taskLimitTimes === 1 || oneTask['taskShowTitle'].includes('玩一玩得奖励')) {
         console.log(`任务：${oneTask.taskTitle},${oneTask.taskShowTitle},去执行`);
         let doTask = await takeRequest(`apDoTask`, `{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(oneTask.taskSourceUrl)}","checkVersion":false}`);
         console.log(`执行结果：${JSON.stringify(doTask)}`);
         await $.wait(2000);
         $.freshFlag = true;
       }
-      if (oneTask.id === 357) {
-        // let detail = await takeRequest(`apTaskDetail`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4}`);
+      if (oneTask.taskLimitTimes === 3) {
+        let detail = await takeRequest(`apTaskDetail`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4}`);
+        let status = detail.status;
+        console.log(`任务：${oneTask.taskTitle},${oneTask.taskShowTitle},进度：${status.userFinishedTimes}/${status.finishNeed}`);
         // await $.wait(1000);
-        // let status = detail.status;
         // let taskItemList =  detail.taskItemList;
         // for (let j = 0; j < taskItemList.length && j < (status.finishNeed - status.userFinishedTimes); j++) {
-        //     console.log(`浏览：${taskItemList[j].itemName}`);
-        //     let doTask = await takeRequest(`apDoTask`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(taskItemList[j].itemId)}","checkVersion":false}`);
-        //     console.log(`执行结果：${JSON.stringify(doTask)}`);
-        //     await $.wait(2000);
+        //   console.log(`浏览：${taskItemList[j].itemName}`);
+        //   let doTask2 = await takeRequest(`apTaskTimeRecord`,`{"linkId":"${link}","taskId":"${oneTask.id}"}`);
+        //   console.log('doTask2', doTask2)
+        //   await $.wait(10 * 1000);
+        //   let doTask = await takeRequest(`apDoTask`,`{"linkId":"${link}","taskType":"${oneTask.taskType}","taskId":${oneTask.id},"channel":4,"itemId":"${encodeURIComponent(taskItemList[j].itemId)}","checkVersion":false}`);
+        //   console.log(`执行结果：${JSON.stringify(doTask)}`);
+        //   await $.wait(2000);
         // }
       }
     }
