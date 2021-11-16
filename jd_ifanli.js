@@ -81,6 +81,7 @@ function getActTaskFinishCount(taskCookie, index) {
                   let body = {
                     taskId: task.taskId,
                     taskType: task.taskType,
+                    businessId: task.businessId,
                   }
                   const taskRecord = await doTask(body, taskCookie, index);
                   if (taskRecord.uid && taskRecord.tt) {
