@@ -22,12 +22,12 @@ inputs:
           cronExpression: "0 0 0 * * * *"
           enable: true
           argument: jd_bean_sign
-    - timer: #东东超市兑换奖品 #摇京豆 #京东汽车兑换 #东东健康兑换商品 #内容鉴赏官 #京东小家电签到
+    - timer: #东东超市兑换奖品 #摇京豆 #京东汽车兑换 #东东健康兑换商品 #内容鉴赏官 #京东小家电签到 #连续签到送大额京豆
         parameters:
-          name: blueCoin_clublottery_carexchange_healthexchange_jsg_xjdSign
+          name: blueCoin_clublottery_carexchange_healthexchange_jsg_xjdSign_sendBeanssign
           cronExpression: "0 0 0 * * * *"
           enable: true
-          argument: jd_blueCoin&jd_club_lottery&jd_car_exchange&jd_health_exchange&jd_jsg&jd_xjdSign
+          argument: jd_blueCoin&jd_club_lottery&jd_car_exchange&jd_health_exchange&jd_jsg&jd_xjdSign&jd_sendBeans_sign
     - timer: #东东农场 #东东萌宠 #口袋书店 #京喜农场 #京东极速版签到 #金榜创造营 #美食馆瓜分京豆 #特务Z #vivo活动 #逛好物赚京豆
         parameters:
           name: fruit_pet_bookshop_jxnc_speedsign_goldcreator_foodRunning_productBrand_vivo_ifanli
