@@ -122,7 +122,7 @@
 #京东保价
 41 0,23 * * * node /scripts/jd_price.js >> /scripts/logs/jd_price.log 2>&1
 #京东极速版签到+赚现金任务
-21 1,6 * * * node /scripts/jd_speed_sign.js >> /scripts/logs/jd_speed_sign.log 2>&1
+21 1,4,6 * * * node /scripts/jd_speed_sign.js >> /scripts/logs/jd_speed_sign.log 2>&1
 #京喜财富岛
 5 1,3-8/1,12,13,18,19 * * * node /scripts/jd_jxbfd.js >> /scripts/logs/jd_jxbfd.log 2>&1
 #京喜财富岛-收集贝壳，每20分钟一次，可根据自己账号数量进行修改cron
