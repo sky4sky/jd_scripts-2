@@ -84,9 +84,11 @@ async function main() {
       if (fissionInfo) {
         if (fissionInfo['userFissionCount'] !== 3 || fissionInfo['userFissionStatus'] !== 'COMPLETE') {
           console.log(`账号 ${$.index} ${$.UserName} 邀请进度：${fissionInfo['userFissionCount']}/3\n`);
-          $.invite_pins.push({
-            pin: $.UserName
-          })
+          if ($.index <= 6) {
+            $.invite_pins.push({
+              pin: $.UserName
+            })
+          }
         } else {
           console.log(`账号 ${$.index} ${$.UserName},${fissionInfo['shareLine']}\n`);
         }
