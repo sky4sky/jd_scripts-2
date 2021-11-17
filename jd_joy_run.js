@@ -1,5 +1,5 @@
 /*
-Last Modified time: 2021-6-6 21:22:37
+Last Modified time: 2021-11-17 11:22:37
 宠汪汪邀请助力与赛跑助力脚本，感谢github@Zero-S1提供帮助
 活动入口：京东APP我的-更多工具-宠汪汪
 token时效很短，几个小时就失效了,闲麻烦的放弃就行
@@ -138,54 +138,58 @@ async function main() {
   // await getFriendPins();
   for (let i = 0; i < cookiesArr.length; i++) {
     if (cookiesArr[i]) {
-      $.validate = '';
-      // const zooFaker = require('./utils/JDJRValidator_Pure');
-      // $.validate = await zooFaker.injectToRequest()
-      if ($.isNode()) {
-        if (process.env.JOY_RUN_HELP_MYSELF) {
-          console.log(`\n赛跑会先给账号内部助力,如您当前账户有剩下助力机会则为lx0301作者助力\n`)
-          let my_run_pins = [];
-          Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
-          run_pins = [...new Set(my_run_pins), [...getRandomArrayElements([...run_pins[0].split(',')], [...run_pins[0].split(',')].length)]];
-          run_pins = [[...run_pins].join(',')];
-          invite_pins = run_pins;
-        } else {
-          console.log(`\n赛跑先给作者两个固定的pin进行助力,然后从账号内部与剩下的固定位置合并后随机抽取进行助力\n如需自己账号内部互助,设置环境变量 JOY_RUN_HELP_MYSELF 为true,则开启账号内部互助\n`)
-          run_pins = run_pins[0].split(',')
-          Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
-          run_pins = [...new Set(run_pins)];
-          let fixPins = run_pins.splice(run_pins.indexOf('被折叠的记忆33'), 1);
-          fixPins.push(...run_pins.splice(run_pins.indexOf('jd_6cd93e613b0e5'), 1));
-          const randomPins = getRandomArrayElements(run_pins, run_pins.length);
-          run_pins = [[...fixPins, ...randomPins].join(',')];
-          invite_pins = run_pins;
+      try {
+        $.validate = '';
+        // const zooFaker = require('./utils/JDJRValidator_Pure');
+        // $.validate = await zooFaker.injectToRequest()
+        if ($.isNode()) {
+          if (process.env.JOY_RUN_HELP_MYSELF) {
+            console.log(`\n赛跑会先给账号内部助力,如您当前账户有剩下助力机会则为lx0301作者助力\n`)
+            let my_run_pins = [];
+            Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => my_run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
+            run_pins = [...new Set(my_run_pins), [...getRandomArrayElements([...run_pins[0].split(',')], [...run_pins[0].split(',')].length)]];
+            run_pins = [[...run_pins].join(',')];
+            invite_pins = run_pins;
+          } else {
+            console.log(`\n赛跑先给作者两个固定的pin进行助力,然后从账号内部与剩下的固定位置合并后随机抽取进行助力\n如需自己账号内部互助,设置环境变量 JOY_RUN_HELP_MYSELF 为true,则开启账号内部互助\n`)
+            run_pins = run_pins[0].split(',')
+            Object.values(jdCookieNode).filter(item => item.match(/pt_pin=([^; ]+)(?=;?)/)).map(item => run_pins.push(decodeURIComponent(item.match(/pt_pin=([^; ]+)(?=;?)/)[1])))
+            run_pins = [...new Set(run_pins)];
+            let fixPins = run_pins.splice(run_pins.indexOf('被折叠的记忆33'), 1);
+            fixPins.push(...run_pins.splice(run_pins.indexOf('jd_6cd93e613b0e5'), 1));
+            const randomPins = getRandomArrayElements(run_pins, run_pins.length);
+            run_pins = [[...fixPins, ...randomPins].join(',')];
+            invite_pins = run_pins;
+          }
         }
-      }
-      cookie = cookiesArr[i];
-      UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      $.inviteReward = 0;
-      $.runReward = 0;
-      console.log(`\n开始【京东账号${$.index}】${UserName}\n`);
-      $.jdLogin = true;
-      $.LKYLLogin = true;
-      console.log(`=============【开始邀请助力】===============`)
-      $.lkt = Date.now().toString();
-      const inviteIndex = $.index > invite_pins.length ? (invite_pins.length - 1) : ($.index - 1);
-      let new_invite_pins = invite_pins[inviteIndex].split(',');
-      new_invite_pins = [...new_invite_pins, ...getRandomArrayElements(friendsArr, friendsArr.length >= 18 ? 18 : friendsArr.length)];
-      await invite(new_invite_pins);
-      if ($.jdLogin && $.LKYLLogin) {
-        if (nowTimes.getHours() >= 9 && nowTimes.getHours() < 21) {
-          console.log(`===========【开始助力好友赛跑】===========`)
-          const runIndex = $.index > run_pins.length ? (run_pins.length - 1) : ($.index - 1);
-          let new_run_pins = run_pins[runIndex].split(',');
-          await run(new_run_pins);
-        } else {
-          console.log(`非赛跑时间\n`)
+        cookie = cookiesArr[i];
+        UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+        $.index = i + 1;
+        $.inviteReward = 0;
+        $.runReward = 0;
+        console.log(`\n开始【京东账号${$.index}】${UserName}\n`);
+        $.jdLogin = true;
+        $.LKYLLogin = true;
+        console.log(`=============【开始邀请助力】===============`)
+        $.lkt = Date.now().toString();
+        const inviteIndex = $.index > invite_pins.length ? (invite_pins.length - 1) : ($.index - 1);
+        let new_invite_pins = invite_pins[inviteIndex].split(',');
+        new_invite_pins = [...new_invite_pins, ...getRandomArrayElements(friendsArr, friendsArr.length >= 18 ? 18 : friendsArr.length)];
+        await invite(new_invite_pins);
+        if ($.jdLogin && $.LKYLLogin) {
+          if (nowTimes.getHours() >= 9 && nowTimes.getHours() < 21) {
+            console.log(`===========【开始助力好友赛跑】===========`)
+            const runIndex = $.index > run_pins.length ? (run_pins.length - 1) : ($.index - 1);
+            let new_run_pins = run_pins[runIndex].split(',');
+            await run(new_run_pins);
+          } else {
+            console.log(`非赛跑时间\n`)
+          }
         }
+        await showMsg();
+      } catch (e) {
+        $.log(e)
       }
-      await showMsg();
     }
   }
   $.done()
@@ -347,6 +351,10 @@ async function invite(invite_pins) {
           $.jdLogin = false;
           break
         }
+        if (data.errorMessage && data.errorMessage.includes('活动太火爆')) {
+          $.log(`邀请助力失败：${$.toStr(data)}\n`);
+          break
+        }
       }
     }
   }
@@ -444,22 +452,29 @@ async function run(run_pins) {
       continue
     }
     const combatDetailRes = await combatDetail(item);
-    const { petRaceResult } = combatDetailRes.data;
-    console.log(`petRaceResult ${petRaceResult}`);
-    if (petRaceResult === 'help_full') {
-      console.log('您的赛跑助力机会已耗尽');
-      break;
-    } else if (petRaceResult === 'can_help') {
-      console.log(`开始赛跑助力好友 ${item}`)
-      const LKYL_DATA = await combatHelp(item);
-      if (LKYL_DATA.errorCode === 'L0001' && !LKYL_DATA.success) {
-        console.log('来客有礼宠汪汪token失效');
-        $.setdata('', 'jdJoyRunToken');
-        $.msg($.name, '【提示】来客有礼token失效，请重新获取', "iOS用户微信搜索'来客有礼'小程序\n点击底部的'发现'Tab\n即可获取Token")
-        $.LKYLLogin = false;
+    if (combatDetailRes && combatDetailRes.success && combatDetailRes.data) {
+      const { petRaceResult } = combatDetailRes.data;
+      console.log(`petRaceResult ${petRaceResult}`);
+      if (petRaceResult === 'help_full') {
+        console.log('您的赛跑助力机会已耗尽');
+        break;
+      } else if (petRaceResult === 'can_help') {
+        console.log(`开始赛跑助力好友 ${item}`)
+        const LKYL_DATA = await combatHelp(item);
+        if (LKYL_DATA.errorCode === 'L0001' && !LKYL_DATA.success) {
+          console.log('来客有礼宠汪汪token失效');
+          $.setdata('', 'jdJoyRunToken');
+          $.msg($.name, '【提示】来客有礼token失效，请重新获取', "iOS用户微信搜索'来客有礼'小程序\n点击底部的'发现'Tab\n即可获取Token")
+          $.LKYLLogin = false;
+          break
+        } else {
+          $.LKYLLogin = true;
+        }
+      }
+    } else {
+      if (combatDetailRes.errorMessage && combatDetailRes.errorMessage.includes('活动太火爆')) {
+        $.log(`赛跑助力失败：${$.toStr(combatDetailRes)}\n`);
         break
-      } else {
-        $.LKYLLogin = true;
       }
     }
   }
