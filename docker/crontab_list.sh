@@ -187,3 +187,5 @@
 1 0,12,18,22 * * * node /scripts/jd_ifanli.js >> /scripts/logs/jd_ifanli.log 2>&1
 #发财挖宝
 20 6,12,16,22 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
+# 连续签到，赢大额京豆
+1 1,21 * * * node /scripts/jd_sendBeans_sign.js >> /scripts/logs/jd_sendBeans_sign.log 2>&1
