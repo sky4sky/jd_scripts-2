@@ -10,7 +10,7 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
-
+$.invite_pins = [];
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -36,6 +36,7 @@ if ($.isNode()) {
         $.fp =  randomString();
         $.eid =  randomString(90).toUpperCase();
         await main();
+        await $.wait(2000);
       }
     }
   } catch (e) {
@@ -45,6 +46,29 @@ if ($.isNode()) {
     $.msg($.name, '', message);
     await notify.sendNotify($.name, message);
   }
+  for (let i = 0; i < cookiesArr.length; i++) {
+    cookie = cookiesArr[i];
+    if (cookie) {
+      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+      $.index = i + 1;
+      for (const item of $.invite_pins) {
+        if (!item['pin']) continue;
+        console.log(`\n\n******【京东账号${$.index}】${$.nickName || $.UserName}开始 助力 ${item['pin']}*********\n`);
+        const data = await invite(item['pin']);
+        if (data && data.success && data.data) {
+          const res = await join(item['pin']);
+          if (res) {
+            if (res['errorCode'] && (res['errorCode'] === '612201' || res['errorCode'] === '612209')) {
+              break
+            }
+          }
+        } else {
+          console.log('invite异常', data);
+        }
+        await $.wait(4000);
+      }
+    }
+  }
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -53,16 +77,31 @@ if ($.isNode()) {
       $.done();
     })
 async function main() {
-  const res = await sendBeansDetail();
-  if (res && res.success && res['data']) {
-    const { hasSign } = res['data'];
-    if (hasSign) {
-      console.log(`账号 ${$.index} ${$.UserName},已签到`);
-      return ;
+  try {
+    const res = await sendBeansDetail();
+    if (res && res.success && res['data']) {
+      const { hasSign, fissionInfo } = res['data'];
+      if (fissionInfo) {
+        if (fissionInfo['userFissionCount'] !== 3 || fissionInfo['userFissionStatus'] !== 'COMPLETE') {
+          console.log(`账号 ${$.index} ${$.UserName} 邀请进度：${fissionInfo['userFissionCount']}/3\n`);
+          $.invite_pins.push({
+            pin: $.UserName
+          })
+        } else {
+          console.log(`账号 ${$.index} ${$.UserName},${fissionInfo['shareLine']}\n`);
+        }
+      }
+      if (hasSign) {
+        console.log(`账号 ${$.index} ${$.UserName},已签到`);
+        return ;
+      }
+      //开始签到
+      await sendBeansSign();
+    } else {
+      console.log(`sendBeansDetail 异常：${$.toStr(res)}\n`);
     }
-    await sendBeansSign();
-  } else {
-    console.log(`sendBeansDetail 异常：${$.toStr(res)}\n`);
+  } catch (e) {
+    $.logErr()
   }
 }
 async function sendBeansSign() {
@@ -118,6 +157,73 @@ function sendBeansDetail() {
         if (err) {
           console.log('sendBeansDetail', $.toStr(err));
         } else {
+          data = $.toObj(data)
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data)
+      }
+    })
+  })
+}
+
+function invite(pin) {
+  return new Promise(resolve => {
+    const options = {
+      url: `https://draw.jdfcloud.com//api/turncard/chat/invite?appId=wxccb5c536b0ecd1bf&turnTableId=1310&shopId=58661&invitePin=${encodeURIComponent(pin)}&openId=oPcgJ40Ol7BSTczZ2ok0WmfLWoAs`,
+      headers: {
+        "Accept-Encoding": "gzip,compress,br,deflate",
+        "App-Id": "wxccb5c536b0ecd1bf",
+        "Connection": "keep-alive",
+        "Host": "draw.jdfcloud.com",
+        "LKYLToken": "",
+        "Lottery-Access-Signature": "",
+        "Referer": "https://servicewechat.com/wxccb5c536b0ecd1bf/776/page-frame.html",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x1800102c) NetType/WIFI Language/zh_CN",
+        "content-type": "application/json",
+        "openId": "oPcgJ40Ol7BSTczZ2ok0WmfLWoAs"
+      }
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log('invite', $.toStr(err));
+        } else {
+          data = $.toObj(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve(data)
+      }
+    })
+  })
+}
+function join(pin) {
+  return new Promise(resolve => {
+    const options = {
+      url: `https://draw.jdfcloud.com//api/turncard/chat/join?appId=wxccb5c536b0ecd1bf&client=apple&turnTableId=1310&shopId=58661&invitePin=${encodeURIComponent(pin)}&inviteDate=1637138004853&thresholdType=1&openId=oPcgJ40Ol7BSTczZ2ok0WmfLWoAs`,
+      headers: {
+        'Cookie' : cookie,
+        "Accept-Encoding": "gzip,compress,br,deflate",
+        "App-Id": "wxccb5c536b0ecd1bf",
+        "Connection": "keep-alive",
+        "Host": "draw.jdfcloud.com",
+        "LKYLToken": "",
+        "Lottery-Access-Signature": "",
+        "Referer": "https://servicewechat.com/wxccb5c536b0ecd1bf/776/page-frame.html",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_7_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.16(0x1800102c) NetType/WIFI Language/zh_CN",
+        "content-type": "application/json",
+        "openId": "oPcgJ40Ol7BSTczZ2ok0WmfLWoAs"
+      }
+    }
+    $.get(options, async (err, resp, data) => {
+      try {
+        if (err) {
+          console.log('join', $.toStr(err));
+        } else {
+          console.log('\njoin', data);
           data = $.toObj(data)
         }
       } catch (e) {
