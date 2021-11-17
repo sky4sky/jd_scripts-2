@@ -73,7 +73,7 @@ let res = [];
         for (const item of $.shareCodes) {
           const { fcwbinviter, fcwbinviteCode } = item;
           if (fcwbinviter && fcwbinviteCode) {
-            console.log(`【京东账号${$.index}】${$.UserName}去助力:${fcwbinviter}`);
+            console.log(`【京东账号${$.index}】${$.UserName}去助力:${$.toStr(item)}`);
             const HelpInfo = await takeRequest(`happyDigHelp`, `{"linkId":"${link}","inviter":"${fcwbinviter}","inviteCode":"${fcwbinviteCode}"}`);
             if (HelpInfo && HelpInfo['code'] === 0 && HelpInfo.success) {
               console.log(`助力 ${fcwbinviter} 成功\n`);
@@ -108,14 +108,16 @@ async function main() {
     const HelpInfo = await takeRequest(`happyDigHelp`, `{"linkId":"${link}","inviter":"${fcwbinviter}","inviteCode":"${fcwbinviteCode}"}`);
   }
   $.freshFlag = false;
-  if ($.index === 1 && process.env.FCWB_HELP && process.env.FCWB_HELP === 'true') {
-    const shareCodes = {
-      "fcwbinviter": homeInfo.markedPin,
-      "fcwbinviteCode": homeInfo.inviteCode,
+  if ($.index === 1) {
+    if (process.env.FCWB_HELP && process.env.FCWB_HELP === 'true') {
+      const shareCodes = {
+        "fcwbinviter": homeInfo.markedPin,
+        "fcwbinviteCode": homeInfo.inviteCode,
+      }
+      $.shareCodes = [...[shareCodes], ...res]
+    } else {
+      $.shareCodes = res;
     }
-    $.shareCodes = [...[shareCodes], ...res]
-  } else {
-    $.shareCodes = res;
   }
   await doTask();
   if ($.freshFlag) {

@@ -152,8 +152,8 @@ async function joinTwoPeopleRun() {
     teamLevelTemp = $.isNode() ? (process.env.JOY_TEAM_LEVEL ? process.env.JOY_TEAM_LEVEL.split('&') : teamLevel.split('&')) : ($.getdata('JOY_TEAM_LEVEL') ? $.getdata('JOY_TEAM_LEVEL').split('&') : teamLevel.split('&'));
     teamLevelTemp = teamLevelTemp[$.index - 1] ? teamLevelTemp[$.index - 1] : 2;
     await getPetRace();
-    console.log(`\n===以下是京东账号${$.index} ${$.nickName} ${$.petRaceResult.data.teamLimitCount || teamLevelTemp}人赛跑信息===\n`)
-    if ($.petRaceResult) {
+    if ($.petRaceResult && $.petRaceResult.success && $.petRaceResult.data) {
+      console.log(`\n===以下是京东账号${$.index} ${$.nickName} ${$.petRaceResult.data.teamLimitCount || teamLevelTemp}人赛跑信息===\n`)
       let petRaceResult = $.petRaceResult.data.petRaceResult;
       // let raceUsers = $.petRaceResult.data.raceUsers;
       console.log(`赛跑状态：${petRaceResult}\n`);
@@ -222,6 +222,8 @@ async function joinTwoPeopleRun() {
           }
         }
       }
+    } else {
+      console.log(`getPetRace异常：${$.toStr($.petRaceResult)}\n`)
     }
   } else {
     console.log(`您设置的是不参加双人赛跑`)
@@ -522,7 +524,7 @@ function appScanMarket(type, body) {
 }
 function launchInvite(body = {}) {
   return new Promise(resolve => {
-    const invitePin = '被折叠的记忆33';
+    const invitePin = 'jd_6cd93e613b0e5';
     const url = `https://draw.jdfcloud.com//common/pet/enterRoom/h5?invitePin=${encodeURIComponent(invitePin)}&inviteSource=friend_list&shareSource=weapp&openId=oPcgJ49Ea26t4OFpK9P2WoPwCh3I&reqSource=weapp&invokeKey=${invokeKey}`;
     $.post(taskPostUrl(url, JSON.stringify(body), '', '', 'application/json'), async (err, resp, data) => {
       try {
@@ -670,13 +672,14 @@ function enterRoom() {
           console.log('\n京东宠汪汪: API查询请求失败 ‼️‼️')
         } else {
           // console.log('JSON.parse(data)', JSON.parse(data))
-
           $.roomData = JSON.parse(data);
-
-          console.log(`现有狗粮: ${$.roomData.data.petFood}\n`)
-
-          subTitle = `【用户名】${$.roomData.data.pin}`
-          message = `现有积分: ${$.roomData.data.petCoin}\n现有狗粮: ${$.roomData.data.petFood}\n喂养次数: ${$.roomData.data.feedCount}\n宠物等级: ${$.roomData.data.petLevel}\n`
+          if ($.roomData && $.roomData.success && $.roomData.data) {
+            console.log(`现有狗粮: ${$.roomData.data.petFood}\n`)
+            subTitle = `【用户名】${$.roomData.data.pin}`
+            message = `现有积分: ${$.roomData.data.petCoin}\n现有狗粮: ${$.roomData.data.petFood}\n喂养次数: ${$.roomData.data.feedCount}\n宠物等级: ${$.roomData.data.petLevel}\n`
+          } else {
+            $.log(`enterRoom异常：${$.toStr($.roomData)}`)
+          }
         }
       } catch (e) {
         $.logErr(e, resp);
