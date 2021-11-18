@@ -46,29 +46,29 @@ if ($.isNode()) {
     $.msg($.name, '', message);
     await notify.sendNotify($.name, message);
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i];
-    if (cookie) {
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      for (const item of $.invite_pins) {
-        if (!item['pin']) continue;
-        console.log(`\n\n******【京东账号${$.index}】${$.nickName || $.UserName}开始 助力 ${item['pin']}*********\n`);
-        const data = await invite(item['pin']);
-        if (data && data.success && data.data) {
-          const res = await join(item['pin']);
-          if (res) {
-            if (res['errorCode'] && (res['errorCode'] === '612201' || res['errorCode'] === '612209')) {
-              break
-            }
-          }
-        } else {
-          console.log('invite异常', data);
-        }
-        await $.wait(4000);
-      }
-    }
-  }
+  // for (let i = 0; i < cookiesArr.length; i++) {
+  //   cookie = cookiesArr[i];
+  //   if (cookie) {
+  //     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+  //     $.index = i + 1;
+  //     for (const item of $.invite_pins) {
+  //       if (!item['pin']) continue;
+  //       console.log(`\n\n******【京东账号${$.index}】${$.nickName || $.UserName}开始 助力 ${item['pin']}*********\n`);
+  //       const data = await invite(item['pin']);
+  //       if (data && data.success && data.data) {
+  //         const res = await join(item['pin']);
+  //         if (res) {
+  //           if (res['errorCode'] && (res['errorCode'] === '612201' || res['errorCode'] === '612209')) {
+  //             break
+  //           }
+  //         }
+  //       } else {
+  //         console.log('invite异常', data);
+  //       }
+  //       await $.wait(4000);
+  //     }
+  //   }
+  // }
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
