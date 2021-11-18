@@ -166,6 +166,9 @@ function feedPets(feedNum) {
           }
         } else {
           console.log(`喂食失败:${JSON.stringify($.data)}\n`);
+          if ($.data && $.toStr($.data).includes('活动太火爆')) {
+            await notify.sendNotify($.name, `京东账号 ${$.index} ${$.UserName}\n${$.data.errorMessage}\n请停运所有有关宠旺旺的脚本`)
+          }
         }
       } catch (e) {
         $.logErr(e, resp);

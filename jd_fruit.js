@@ -197,7 +197,37 @@ async function doDailyTask() {
   } else {
     console.log(`今天已经做过浏览广告任务\n`);
   }
-  //定时领水
+  //去首页逛逛“领京豆”
+  // if ($.farmTask['treasureBoxInit-getBean']) {
+  //   if (!$.farmTask['treasureBoxInit-getBean']['f']) {
+  //     if ($.farmTask['treasureBoxInit-getBean']['status'] === 0) {
+  //       console.log(`开始做 ${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}任务\n`)
+  //       $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":1,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+  //       if ($.getTreasureBoxAwardRes.code === "0") {
+  //         await findBeanScene();
+  //         await $.wait(500);
+  //         $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+  //         if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
+  //           console.log(`领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
+  //         } else {
+  //           console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+  //         }
+  //       } else {
+  //         console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+  //       }
+  //     } else if ($.farmTask['treasureBoxInit-getBean']['status'] === 1) {
+  //       console.log(`任务已完成，水滴未领取，开始领取水滴\n`)
+  //       $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+  //       if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
+  //         console.log(`领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
+  //       } else {
+  //         console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+  //       }
+  //     }
+  //   } else {
+  //     console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}已完成\n`)
+  //   }
+  // }
   if (!$.farmTask.gotThreeMealInit.f) {
     //
     await gotThreeMealForFarm();
@@ -231,6 +261,38 @@ async function doDailyTask() {
   await executeWaterRains();//水滴雨
   await getExtraAward();//领取额外水滴奖励
   await turntableFarm()//天天抽奖得好礼
+}
+function findBeanScene() {
+  return new Promise(resolve => {
+    const options = {
+      "url": "https://api.m.jd.com/client.action?functionId=findBeanScene",
+      "body": "area=18_1501_1504_57336&body=%7B%22rnClient%22%3A%222%22%2C%22viewChannel%22%3A%22AppHome%22%2C%22source%22%3A%22AppHome%22%2C%22rnVersion%22%3A%224.7%22%7D&build=167802&client=apple&clientVersion=10.1.2&d_brand=apple&d_model=iPhone11%2C8&eid=eidIf12a8121eas2urxgGc%2BzS5%2BUYGu1Nbed7bq8YY%2BgPd0Q0t%2BiviZdQsxnK/HTA7AxZzZBrtu1ulwEviYSV3QUuw2XHHC%2BPFHdNYx1A/3Zt8xYR%2Bd3&isBackground=N&joycious=126&lang=zh_CN&networkType=wifi&networklibtype=JDNetworkBaseAF&openudid=88732f840b77821b345bf07fd71f609e6ff12f43&osVersion=14.7.1&partner=apple&rfs=0000&scope=11&screen=828%2A1792&sign=942e05c96e7fbd944b695fdf27f3d69a&st=1631583596623&sv=120&uemps=0-0&uts=0f31TVRjBSt6U6blB/IaCTHXfJdTG4zeMVQa4V9LFDmEFuBkph78Snx8BQ1FcmitzeQIQWwBlVj%2BTL6J6WAuFLHZ4jXYF%2BT2yba4qJ/kVXp93djRgcdyVnXv8OCnEOON4CZwYXIqz5fvr2PGIKV5nSsKhQ7qeL8lJtRbEIaRnOEi839%2BjQFzUqqCnXa0GqLzaPekWwPRnbm4IBfZ27o4lA%3D%3D&uuid=hjudwgohxzVu96krv/T6Hg%3D%3D&wifiBssid=f7754c40c09909dc5fccf03e8d7e39d4",
+      "headers": {
+        "Cookie": cookie,
+        "Host": "api.m.jd.com",
+        "Accept": "*/*",
+        "Connection": "keep-alive",
+        "User-Agent": $.isNode() ? (process.env.JD_USER_AGENT ? process.env.JD_USER_AGENT : (require('./USER_AGENTS').USER_AGENT)) : ($.getdata('JDUA') ? $.getdata('JDUA') : "jdapp;iPhone;9.4.4;14.3;network/4g;Mozilla/5.0 (iPhone; CPU iPhone OS 14_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148;supportJDSHWK/1"),
+        "Accept-Language": "zh-Hans-CN;q=1,en-CN;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    }
+    $.post(options, (err, resp, data) => {
+      try {
+        if (err) {
+          console.log(`${JSON.stringify(err)}`)
+          console.log(`${$.name} API请求失败，请检查网路重试`)
+        } else {
+          data = $.toObj(data);
+        }
+      } catch (e) {
+        $.logErr(e, resp)
+      } finally {
+        resolve();
+      }
+    })
+  })
 }
 async function predictionFruit() {
   console.log('开始预测水果成熟时间\n');
@@ -792,8 +854,8 @@ async function getAwardInviteFriend() {
   // console.log(`查询好友列表数据：${JSON.stringify($.friendList)}\n`)
   if ($.friendList) {
     console.log(`\n今日已邀请好友${$.friendList.inviteFriendCount}个 / 每日邀请上限${$.friendList.inviteFriendMax}个`);
-    console.log(`开始删除${$.friendList.friends && $.friendList.friends.length}个好友,可拿每天的邀请奖励`);
-    if ($.friendList.friends && $.friendList.friends.length > 0) {
+    if ($.friendList.friends && $.friendList.friends.length > 10) {
+      console.log(`开始删除${$.friendList.friends.length}个好友,可拿每天的邀请奖励`);
       for (let friend of $.friendList.friends) {
         console.log(`\n开始删除好友 [${friend.shareCode}]`);
         const deleteFriendForFarm = await request('deleteFriendForFarm', { "shareCode": `${friend.shareCode}`,"version":8,"channel":1 });
@@ -805,7 +867,7 @@ async function getAwardInviteFriend() {
     await receiveFriendInvite();//为他人助力,接受邀请成为别人的好友
     if ($.friendList.inviteFriendCount > 0) {
       if ($.friendList.inviteFriendCount > $.friendList.inviteFriendGotAwardCount) {
-        console.log('开始领取邀请好友的奖励');
+        console.log('\n开始领取邀请好友的奖励');
         await awardInviteFriendForFarm();
         console.log(`领取邀请好友的奖励结果：：${JSON.stringify($.awardInviteFriendRes)}`);
       }
@@ -900,22 +962,20 @@ async function receiveFriendInvite() {
       console.log('自己不能邀请自己成为好友噢\n')
       continue
     }
+    console.log(`\n开始接收好友,助力码为 ${code} 发出的邀请`)
     await inviteFriend(code);
-    // console.log(`接收邀请成为好友结果:${JSON.stringify($.inviteFriendRes)}`)
-    if ($.inviteFriendRes && $.inviteFriendRes.helpResult && $.inviteFriendRes.helpResult.code === '0') {
-      console.log(`接收邀请成为好友结果成功,您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
-    } else if ($.inviteFriendRes && $.inviteFriendRes.helpResult && $.inviteFriendRes.helpResult.code === '17') {
-      console.log(`接收邀请成为好友结果失败,对方已是您的好友`)
+    if ($.inviteFriendRes) {
+      if ($.inviteFriendRes.helpResult) {
+        if ($.inviteFriendRes.helpResult.code === '0') {
+          console.log(`接收邀请成为好友成功,您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
+        } else if ($.inviteFriendRes.helpResult.code === '17') {
+          console.log(`接收邀请成为好友失败,对方已是您的好友`)
+        } else {
+          console.log(`接收 ${$.inviteFriendRes.helpResult.masterUserInfo.nickName} 的好友邀请失败,未知结果：code：${$.inviteFriendRes.helpResult.code}，type：${$.inviteFriendRes.helpResult.type}`)
+        }
+      }
     }
   }
-  // console.log(`开始接受6fbd26cc27ac44d6a7fed34092453f77的邀请\n`)
-  // await inviteFriend('6fbd26cc27ac44d6a7fed34092453f77');
-  // console.log(`接收邀请成为好友结果:${JSON.stringify($.inviteFriendRes.helpResult)}`)
-  // if ($.inviteFriendRes.helpResult.code === '0') {
-  //   console.log(`您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
-  // } else if ($.inviteFriendRes.helpResult.code === '17') {
-  //   console.log(`对方已是您的好友`)
-  // }
 }
 async function duck() {
   for (let i = 0; i < 10; i++) {
