@@ -867,7 +867,7 @@ async function getAwardInviteFriend() {
     await receiveFriendInvite();//为他人助力,接受邀请成为别人的好友
     if ($.friendList.inviteFriendCount > 0) {
       if ($.friendList.inviteFriendCount > $.friendList.inviteFriendGotAwardCount) {
-        console.log('开始领取邀请好友的奖励');
+        console.log('\n开始领取邀请好友的奖励');
         await awardInviteFriendForFarm();
         console.log(`领取邀请好友的奖励结果：：${JSON.stringify($.awardInviteFriendRes)}`);
       }
@@ -962,22 +962,20 @@ async function receiveFriendInvite() {
       console.log('自己不能邀请自己成为好友噢\n')
       continue
     }
+    console.log(`\n开始接收好友,助力码为 ${code} 发出的邀请`)
     await inviteFriend(code);
-    // console.log(`接收邀请成为好友结果:${JSON.stringify($.inviteFriendRes)}`)
-    if ($.inviteFriendRes && $.inviteFriendRes.helpResult && $.inviteFriendRes.helpResult.code === '0') {
-      console.log(`接收邀请成为好友结果成功,您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
-    } else if ($.inviteFriendRes && $.inviteFriendRes.helpResult && $.inviteFriendRes.helpResult.code === '17') {
-      console.log(`接收邀请成为好友结果失败,对方已是您的好友`)
+    if ($.inviteFriendRes) {
+      if ($.inviteFriendRes.helpResult) {
+        if ($.inviteFriendRes.helpResult.code === '0') {
+          console.log(`接收邀请成为好友成功,您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
+        } else if ($.inviteFriendRes.helpResult.code === '17') {
+          console.log(`接收邀请成为好友失败,对方已是您的好友`)
+        } else {
+          console.log(`接收 ${$.inviteFriendRes.helpResult.masterUserInfo.nickName} 的好友邀请失败,未知结果：code：${$.inviteFriendRes.helpResult.code}，type：${$.inviteFriendRes.helpResult.type}`)
+        }
+      }
     }
   }
-  // console.log(`开始接受6fbd26cc27ac44d6a7fed34092453f77的邀请\n`)
-  // await inviteFriend('6fbd26cc27ac44d6a7fed34092453f77');
-  // console.log(`接收邀请成为好友结果:${JSON.stringify($.inviteFriendRes.helpResult)}`)
-  // if ($.inviteFriendRes.helpResult.code === '0') {
-  //   console.log(`您已成为${$.inviteFriendRes.helpResult.masterUserInfo.nickName}的好友`)
-  // } else if ($.inviteFriendRes.helpResult.code === '17') {
-  //   console.log(`对方已是您的好友`)
-  // }
 }
 async function duck() {
   for (let i = 0; i < 10; i++) {
