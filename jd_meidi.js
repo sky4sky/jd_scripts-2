@@ -5,6 +5,7 @@
 31 3,4 1-30 11 * jd_meidi.js
 * */
 const $ = new Env('奔跑的小美');
+const notify = $.isNode() ? require('./sendNotify') : '';
 const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 let cookiesArr = [];
 if ($.isNode()) {
@@ -183,6 +184,10 @@ async function main(cookie) {
             console.log(`\n进行一次抽奖`);
             let drawInfo = await takeRequest(`draw`,'&drawId=0&type=0');
             console.log(`结果：${JSON.stringify(drawInfo)}`);
+            if (drawInfo && drawInfo.prize && drawInfo.prize.rewardType === 6) {
+              $.msg($.name, '', `京东账号 ${$.index} ${$.UserName}\n抽奖获得：${drawInfo.prize.rewardName}`);
+              if ($.isNode()) await notify.sendNotify($.name, `京东账号 ${$.index} ${$.UserName}\n抽奖获得：${drawInfo.prize.rewardName}`);
+            }
             await $.wait(3000);
         }
     }
