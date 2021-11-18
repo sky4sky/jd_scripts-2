@@ -1,6 +1,9 @@
 /*
 连续签到，赢大额京豆
 活动地址：https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=1310&shopId=58661
+
+https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=1247&shopId=1000102789
+
 1 1,21 * * * jd_sendBeans_sign.js
  */
 const $ = new Env('连续签到，赢大额京豆');
@@ -11,6 +14,16 @@ const jdCookieNode = $.isNode() ? require('./jdCookie.js') : '';
 //IOS等用户直接用NobyDa的jd cookie
 let cookiesArr = [], cookie = '', message = '';
 $.invite_pins = [];
+const activityList = [
+  {
+    turnTableId: 1310,
+    shopId: 58661
+  },
+  {
+    turnTableId: 1247,
+    shopId: 1000102789
+  }
+]
 if ($.isNode()) {
   Object.keys(jdCookieNode).forEach((item) => {
     cookiesArr.push(jdCookieNode[item])
@@ -35,8 +48,11 @@ if ($.isNode()) {
         console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
         $.fp =  randomString();
         $.eid =  randomString(90).toUpperCase();
-        await main();
-        await $.wait(2000);
+        for (const item of activityList) {
+          const {turnTableId, shopId} = item;
+          await main(turnTableId, shopId);
+          await $.wait(2000);
+        }
       }
     }
   } catch (e) {
@@ -46,29 +62,29 @@ if ($.isNode()) {
     $.msg($.name, '', message);
     await notify.sendNotify($.name, message);
   }
-  for (let i = 0; i < cookiesArr.length; i++) {
-    cookie = cookiesArr[i];
-    if (cookie) {
-      $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
-      $.index = i + 1;
-      for (const item of $.invite_pins) {
-        if (!item['pin']) continue;
-        console.log(`\n\n******【京东账号${$.index}】${$.nickName || $.UserName}开始 助力 ${item['pin']}*********\n`);
-        const data = await invite(item['pin']);
-        if (data && data.success && data.data) {
-          const res = await join(item['pin']);
-          if (res) {
-            if (res['errorCode'] && (res['errorCode'] === '612201' || res['errorCode'] === '612209')) {
-              break
-            }
-          }
-        } else {
-          console.log('invite异常', data);
-        }
-        await $.wait(4000);
-      }
-    }
-  }
+  // for (let i = 0; i < cookiesArr.length; i++) {
+  //   cookie = cookiesArr[i];
+  //   if (cookie) {
+  //     $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
+  //     $.index = i + 1;
+  //     for (const item of $.invite_pins) {
+  //       if (!item['pin']) continue;
+  //       console.log(`\n\n******【京东账号${$.index}】${$.nickName || $.UserName}开始 助力 ${item['pin']}*********\n`);
+  //       const data = await invite(item['pin']);
+  //       if (data && data.success && data.data) {
+  //         const res = await join(item['pin']);
+  //         if (res) {
+  //           if (res['errorCode'] && (res['errorCode'] === '612201' || res['errorCode'] === '612209')) {
+  //             break
+  //           }
+  //         }
+  //       } else {
+  //         console.log('invite异常', data);
+  //       }
+  //       await $.wait(4000);
+  //     }
+  //   }
+  // }
 })()
     .catch((e) => {
       $.log('', `❌ ${$.name}, 失败! 原因: ${e}!`, '')
@@ -76,9 +92,9 @@ if ($.isNode()) {
     .finally(() => {
       $.done();
     })
-async function main() {
+async function main(turnTableId, shopId) {
   try {
-    const res = await sendBeansDetail();
+    const res = await sendBeansDetail(turnTableId, shopId);
     if (res && res.success && res['data']) {
       const { hasSign, fissionInfo } = res['data'];
       if (fissionInfo) {
@@ -98,7 +114,7 @@ async function main() {
         return ;
       }
       //开始签到
-      await sendBeansSign();
+      await sendBeansSign(turnTableId, shopId);
     } else {
       console.log(`sendBeansDetail 异常：${$.toStr(res)}\n`);
     }
@@ -106,10 +122,10 @@ async function main() {
     $.logErr()
   }
 }
-async function sendBeansSign() {
+async function sendBeansSign(turnTableId, shopId) {
   return new Promise(resolve => {
     const options = {
-      url: `https://sendbeans.jd.com/api/turncard/chat/sign?turnTableId=1310&shopId=58661&fp=${$.fp}&eid=${$.eid}`,
+      url: `https://sendbeans.jd.com/api/turncard/chat/sign?turnTableId=${turnTableId}&shopId=${shopId}&fp=${$.fp}&eid=${$.eid}`,
       headers: {
         'Cookie' : cookie ,
         'Accept-Encoding' : `gzip, deflate, br`,
@@ -141,10 +157,10 @@ async function sendBeansSign() {
     })
   })
 }
-function sendBeansDetail() {
+function sendBeansDetail(turnTableId, shopId) {
   return new Promise(resolve => {
     const options = {
-      url: `https://sendbeans.jd.com/api/turncard/chat/detail?turnTableId=1310&shopId=58661`,
+      url: `https://sendbeans.jd.com/api/turncard/chat/detail?turnTableId=${turnTableId}&shopId=${shopId}`,
       headers: {
         'Cookie' : cookie ,
         'Accept-Encoding' : `gzip, deflate, br`,
