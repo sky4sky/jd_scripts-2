@@ -4,6 +4,8 @@
 
 https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=1247&shopId=1000102789
 
+https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=1082&shopId=1000004123
+
 1 1,21 * * * jd_sendBeans_sign.js
  */
 const $ = new Env('连续签到，赢大额京豆');
@@ -22,6 +24,10 @@ const activityList = [
   {
     turnTableId: 1247,
     shopId: 1000102789
+  },
+  {
+    turnTableId: 1082,
+    shopId: 1000004123
   }
 ]
 if ($.isNode()) {
