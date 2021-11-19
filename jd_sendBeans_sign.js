@@ -56,6 +56,7 @@ if ($.isNode()) {
           $.fp =  randomString();
           $.eid =  randomString(90).toUpperCase();
           const {turnTableId, shopId} = item;
+          console.log(`开始签到，活动地址：https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=${turnTableId}&shopId=${shopId}`)
           await main(turnTableId, shopId);
           await $.wait(2000);
         }
@@ -105,7 +106,7 @@ async function main(turnTableId, shopId) {
       const { hasSign, fissionInfo } = res['data'];
       if (fissionInfo) {
         if (fissionInfo['userFissionCount'] !== 3 || fissionInfo['userFissionStatus'] !== 'COMPLETE') {
-          console.log(`账号 ${$.index} ${$.UserName} 邀请进度：${fissionInfo['userFissionCount']}/3\n`);
+          // console.log(`账号 ${$.index} ${$.UserName} 邀请进度：${fissionInfo['userFissionCount']}/3\n`);
           if ($.index <= 6) {
             $.invite_pins.push({
               pin: $.UserName
