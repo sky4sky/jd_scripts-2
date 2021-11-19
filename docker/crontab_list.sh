@@ -189,3 +189,5 @@
 20 6,12,16,22 * * * node /scripts/jd_fcwb.js >> /scripts/logs/jd_fcwb.log 2>&1
 # 连续签到，赢大额京豆
 1 1,21 * * * node /scripts/jd_sendBeans_sign.js >> /scripts/logs/jd_sendBeans_sign.log 2>&1
+# 京东半年红包明细
+1 10 1,20 * * node /scripts/jd_halfYearRed.js >> /scripts/logs/jd_halfYearRed.log 2>&1

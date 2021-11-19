@@ -296,7 +296,8 @@ function redPacket() {
         } else {
           if (data) {
             data = JSON.parse(data).data
-            $.jxRed = 0, $.jsRed = 0, $.jdRed = 0, $.jdhRed = 0, $.jxRedExpire = 0, $.jsRedExpire = 0, $.jdRedExpire = 0, $.jdhRedExpire = 0;
+            $.jxRed = 0, $.jsRed = 0, $.jdRed = 0, $.jdhRed = 0, $.jdOtherRed = 0;
+            $.jxRedExpire = 0, $.jsRedExpire = 0, $.jdRedExpire = 0, $.jdhRedExpire = 0, $.jdOtherExpire = 0;
             let t = new Date()
             t.setDate(t.getDate() + 1)
             t.setHours(0, 0, 0, 0)
@@ -317,10 +318,15 @@ function redPacket() {
                 if (vo['endTime'] === t) {
                   $.jdhRedExpire += parseFloat(vo.balance)
                 }
-              } else {
+              } else if (vo.orgLimitStr.includes("京东商城")) {
                 $.jdRed += parseFloat(vo.balance)
                 if (vo['endTime'] === t) {
                   $.jdRedExpire += parseFloat(vo.balance)
+                }
+              } else {
+                $.jdOtherRed += parseFloat(vo.balance)
+                if (vo['endTime'] === t) {
+                  $.jdOtherExpire += parseFloat(vo.balance)
                 }
               }
             }
@@ -328,9 +334,10 @@ function redPacket() {
             $.jsRed = $.jsRed.toFixed(2)
             $.jdRed = $.jdRed.toFixed(2)
             $.jdhRed = $.jdhRed.toFixed(2)
+            $.jdOtherRed = $.jdOtherRed.toFixed(2)
             $.balance = data.balance
-            $.expiredBalance = ($.jxRedExpire + $.jsRedExpire + $.jdRedExpire + $.jdhRedExpire).toFixed(2)
-            $.message += `\n当前总红包：${$.balance}(今日总过期${$.expiredBalance})元 🧧\n京喜红包：${$.jxRed}(今日将过期${$.jxRedExpire.toFixed(2)})元 🧧\n极速红包：${$.jsRed}(今日将过期${$.jsRedExpire.toFixed(2)})元 🧧\n京东红包：${$.jdRed}(今日将过期${$.jdRedExpire.toFixed(2)})元 🧧\n健康红包：${$.jdhRed}(今日将过期${$.jdhRedExpire.toFixed(2)})元 🧧`;
+            $.expiredBalance = ($.jxRedExpire + $.jsRedExpire + $.jdRedExpire + $.jdhRedExpire + $.jdOtherExpire).toFixed(2)
+            $.message += `\n当前总红包：${$.balance}(今日总过期${$.expiredBalance})元 🧧\n通用红包：${$.jdOtherRed}(今日将过期${$.jdOtherExpire.toFixed(2)})元 🧧\n京喜红包：${$.jxRed}(今日将过期${$.jxRedExpire.toFixed(2)})元 🧧\n极速红包：${$.jsRed}(今日将过期${$.jsRedExpire.toFixed(2)})元 🧧\n京东红包：${$.jdRed}(今日将过期${$.jdRedExpire.toFixed(2)})元 🧧\n健康红包：${$.jdhRed}(今日将过期${$.jdhRedExpire.toFixed(2)})元 🧧`;
           } else {
             console.log(`京东服务器返回空数据`)
           }
