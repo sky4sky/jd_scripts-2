@@ -46,9 +46,9 @@ if ($.isNode()) {
         $.UserName = decodeURIComponent(cookie.match(/pt_pin=([^; ]+)(?=;?)/) && cookie.match(/pt_pin=([^; ]+)(?=;?)/)[1])
         $.index = i + 1;
         console.log(`\n\n******开始【京东账号${$.index}】${$.nickName || $.UserName}*********\n`);
-        $.fp =  randomString();
-        $.eid =  randomString(90).toUpperCase();
         for (const item of activityList) {
+          $.fp =  randomString();
+          $.eid =  randomString(90).toUpperCase();
           const {turnTableId, shopId} = item;
           await main(turnTableId, shopId);
           await $.wait(2000);

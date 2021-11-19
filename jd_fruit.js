@@ -85,6 +85,9 @@ async function jdFruit() {
   subTitle = `【京东账号${$.index}】${$.nickName}`;
   try {
     await initForFarm();
+    await request('collect_Init', {"channel":1});
+    $.getTreasureBoxAwardRes = await request('collect_newUserAward');
+    console.log('\n集勋章赢好礼', $.getTreasureBoxAwardRes)
     if ($.farmInfo.farmUserPro) {
       // option['media-url'] = $.farmInfo.farmUserPro.goodsImage;
       message = `【水果名称】${$.farmInfo.farmUserPro.name}\n`;
@@ -855,7 +858,7 @@ async function getAwardInviteFriend() {
   if ($.friendList) {
     console.log(`\n今日已邀请好友${$.friendList.inviteFriendCount}个 / 每日邀请上限${$.friendList.inviteFriendMax}个`);
     if ($.friendList.friends && $.friendList.friends.length > 10) {
-      console.log(`开始删除${$.friendList.friends.length}个好友,可拿每天的邀请奖励`);
+      console.log(`当前好友：${$.friendList.countOfFriend}个，开始删除${$.friendList.friends.length}个好友,可拿每天的邀请奖励`);
       for (let friend of $.friendList.friends) {
         console.log(`\n开始删除好友 [${friend.shareCode}]`);
         const deleteFriendForFarm = await request('deleteFriendForFarm', { "shareCode": `${friend.shareCode}`,"version":8,"channel":1 });
