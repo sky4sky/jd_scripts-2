@@ -33,6 +33,9 @@ if ($.isNode()) {
     $.msg($.name, '【提示】请先获取京东账号一cookie\n直接使用NobyDa的京东签到获取', 'https://bean.m.jd.com/bean/signIndex.action', {"open-url": "https://bean.m.jd.com/bean/signIndex.action"});
     return;
   }
+  console.log('环境变量：BYTYPE,购买小鸡品种，默认不购买,(ps:暂时不知道买哪个好)\n' +
+      ' BYTYPE="1",购买小黄鸡，BYTYPE="2",购买辣子鸡，BYTYPE="3",购买椰子鸡,BYTYPE="4",购买猪肚鸡,BYTYPE="999",能买哪只买哪只,BYTYPE="888",不购买小鸡\n' +
+      ' 脚本9点-10点才会执行内部助力')
   for (let i = 0; i < cookiesArr.length; i++) {
     $.index = i + 1;
     $.cookie = cookiesArr[i];
@@ -139,8 +142,8 @@ async function main() {
   }
   console.log(`获取获得详情成功,总共有小鸡：${petidList.length}只,鸡蛋:${homePageInfo.eggcnt}个,金币:${homePageInfo.coins},互助码：${homePageInfo.sharekey}`);
   if(!petidList || petidList.length === 0){
-    console.log(`账号内没有小鸡，暂停执行`);
-    return ;
+    console.log(`账号内没有小鸡，继续做赚金币任务`);
+    // return ;
   }
   $.inviteCodeList.push({'use':$.UserName,'code':homePageInfo.sharekey,'max':false,'activeid':activeid});
   if(JSON.stringify(visitBackInfo) !== '{}'){
@@ -256,7 +259,7 @@ async function doUserLoveInfo() {
     }
   }
   let userLoveInfo = await takeRequest(`jxmc`, `queryservice/GetUserLoveInfo`, ``, undefined, true);
-  let lovelevel = userLoveInfo.lovelevel;
+  let lovelevel = userLoveInfo.lovelevel || [];
   for (let i = 0; i < lovelevel.length; i++) {
     if(lovelevel[i].drawstatus === 1){
       console.log(`抽取红包`);
