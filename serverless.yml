@@ -40,12 +40,12 @@ inputs:
           cronExpression: "0 3 */1 * * * *"
           enable: true
           argument: jd_moneyTree&jd_plantBean&jd_dreamFactory&jd_jdfactory&jd_jddj_fruit_collect&jd_jddj_plantBeans_collect&jd_cow_mengniu&jd_big_winner
-    - timer: #签到领现金 #东东小窝 #京喜财富岛 #京东直播 #每日抽奖 #女装魔盒 #东东电竞经理 #京东到家农场 #京东到家鲜豆庄园 #发财挖宝 #奔跑的小美
+    - timer: #签到领现金 #东东小窝 #京喜财富岛 #京东直播 #每日抽奖 #女装魔盒 #东东电竞经理 #京东到家农场 #京东到家鲜豆庄园 #发财挖宝 #奔跑的小美 #集勋章赢好礼
         parameters:
-          name: cash_smallhome_jxbfd_live_dailylottery_nzmh_esManager_jddjfruit_jddjplantBeans_fcwb_meidi
+          name: cash_smallhome_jxbfd_live_dailylottery_nzmh_esManager_jddjfruit_jddjplantBeans_fcwb_meidi_fruitmedal
           cronExpression: "0 0 0-16/8,20 * * * *"
           enable: true
-          argument: jd_cash&jd_small_home&jd_jxbfd&jd_live&jd_daily_lottery&jd_nzmh&jd_esManager&jd_jddj_fruit&jd_jddj_plantBeans&jd_fcwb&jd_meidi
+          argument: jd_cash&jd_small_home&jd_jxbfd&jd_live&jd_daily_lottery&jd_nzmh&jd_esManager&jd_jddj_fruit&jd_jddj_plantBeans&jd_fcwb&jd_meidi&jd_fruit_medal
     - timer: #京东全民开红包 #进店领豆 #取关京东店铺商品 #京东抽奖机 #京东汽车 #京东秒秒币 #东东健康社区 #幸运大转盘 #美丽研究院种植园 #清空购物车
         parameters:
           name: redPacket_shop_unsubscribe_lotteryMachine_car_ms_health_marketlottery_beautyplantation_clearcart
