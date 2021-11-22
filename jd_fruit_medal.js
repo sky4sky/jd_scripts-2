@@ -44,33 +44,37 @@ if ($.isNode()) {
       $.done();
     })
 async function main() {
-  let collect_Init = await request('collect_Init', {"channel":1});
-  if (collect_Init.code === '0' && collect_Init.result) {
-    const { medalInfo = [], taskInfo = [], activityStatus, remainTime = 0 } = collect_Init.result;
-    if (activityStatus === 2) {
-      const collect_newUserAward = await request('collect_newUserAward');
-      console.log(`集勋章赢好礼新人奖励：${$.toStr(collect_newUserAward)}\n`)
-      const medalCount = medalInfo.filter(vo => vo['status'] === 4);
-      if (Array.isArray(medalCount)) console.log(`集勋章进度：${medalCount.length}/${medalInfo.length}，距离结束，还剩：${(remainTime / (24 * 60 * 60 * 1000)).toFixed(2)}天\n`);
-      for (const item of taskInfo) {
-        console.log(`任务：${item['medalName']}，进度：${item['currentTaskCount']}/${item['maxTaskCount']}`);
-        if (item['status'] === 2) {
-          console.log(`${item['medalName']} 任务未完成！`)
-        } else if (item['status'] === 3) {
-          console.log(`${item['medalName']} 任务已完成，去点亮勋章`)
-          const collect_taskAward = await request('collect_taskAward', {"taskType": item['taskType']});
-          console.log(`点亮勋章结果：${$.toStr(collect_taskAward)}\n`);
-        } else if (item['status'] === 4) {
-          console.log(`${item['medalName']} 勋章已点亮`)
+  try {
+    let collect_Init = await request('collect_Init', {"channel":1});
+    if (collect_Init.code === '0' && collect_Init.result) {
+      const { medalInfo = [], taskInfo = [], activityStatus, remainTime = 0 } = collect_Init.result;
+      if (activityStatus === 2) {
+        const collect_newUserAward = await request('collect_newUserAward');
+        console.log(`集勋章赢好礼新人奖励：${$.toStr(collect_newUserAward)}\n`)
+        const medalCount = medalInfo.filter(vo => vo['status'] === 4);
+        if (Array.isArray(medalCount)) console.log(`集勋章进度：${medalCount.length}/${medalInfo.length}，距离结束，还剩：${(remainTime / (24 * 60 * 60 * 1000)).toFixed(2)}天\n`);
+        for (const item of taskInfo) {
+          console.log(`任务：${item['medalName']}，进度：${item['currentTaskCount']}/${item['maxTaskCount']}`);
+          if (item['status'] === 2) {
+            console.log(`${item['medalName']} 任务未完成！`)
+          } else if (item['status'] === 3) {
+            console.log(`${item['medalName']} 任务已完成，去点亮勋章`)
+            const collect_taskAward = await request('collect_taskAward', {"taskType": item['taskType']});
+            console.log(`点亮勋章结果：${$.toStr(collect_taskAward)}\n`);
+          } else if (item['status'] === 4) {
+            console.log(`${item['medalName']} 勋章已点亮`)
+          }
         }
+        // collect_Init = await request('collect_Init', {"channel":1});
+      } else if (activityStatus === 3) {
+        console.log(`您已成功集齐勋章，开始领取奖励\n`);
+        await exchangeAward();
+      } else if (activityStatus === 4) {
+        console.log(`您已成功集齐勋章，且奖励已成功领取，下阶段开启时间，可在东东乐园内查看\n`);
       }
-      // collect_Init = await request('collect_Init', {"channel":1});
-    } else if (activityStatus === 3) {
-      console.log(`您已成功集齐勋章，开始领取奖励\n`);
-      await exchangeAward();
-    } else if (activityStatus === 4) {
-      console.log(`您已成功集齐勋章，且奖励已成功领取，下阶段开启时间，可在东东乐园内查看\n`);
     }
+  } catch (e) {
+    $.logErr(e)
   }
 }
 async function exchangeAward() {
