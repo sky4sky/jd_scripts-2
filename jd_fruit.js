@@ -85,9 +85,6 @@ async function jdFruit() {
   subTitle = `【京东账号${$.index}】${$.nickName}`;
   try {
     await initForFarm();
-    await request('collect_Init', {"channel":1});
-    $.getTreasureBoxAwardRes = await request('collect_newUserAward');
-    console.log('\n集勋章赢好礼', $.getTreasureBoxAwardRes)
     if ($.farmInfo.farmUserPro) {
       // option['media-url'] = $.farmInfo.farmUserPro.goodsImage;
       message = `【水果名称】${$.farmInfo.farmUserPro.name}\n`;

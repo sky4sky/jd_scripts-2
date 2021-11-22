@@ -28,6 +28,10 @@ const activityList = [
   {
     turnTableId: 1082,
     shopId: 1000004123
+  },
+  {
+    turnTableId: 1220,
+    shopId: 191929
   }
 ]
 if ($.isNode()) {
@@ -58,7 +62,7 @@ if ($.isNode()) {
           const {turnTableId, shopId} = item;
           console.log(`开始签到，活动地址：https://sendbeans.jd.com/jump/index/#/taro/pages/turncard/index?turnTableId=${turnTableId}&shopId=${shopId}`)
           await main(turnTableId, shopId);
-          await $.wait(2000);
+          await $.wait(4000);
         }
       }
     }
