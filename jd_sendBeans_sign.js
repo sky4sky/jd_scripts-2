@@ -32,6 +32,10 @@ const activityList = [
   {
     turnTableId: 1220,
     shopId: 191929
+  },
+  {
+    turnTableId: 1162,
+    shopId: 56178
   }
 ]
 if ($.isNode()) {
