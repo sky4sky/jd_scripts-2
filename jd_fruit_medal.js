@@ -89,6 +89,7 @@ async function exchangeAward() {
           console.log(`开始兑换奖品：${award['awardValue']}京豆`)
           const collect_exchangeAward = await request('collect_exchangeAward', { 'type': award['awardType'] })
           if (collect_exchangeAward.code === '0' && collect_exchangeAward.result) {
+            console.log(`兑换：${collect_exchangeAward.result['awardValue']}京豆成功`)
             allMessage += `京东账号 ${$.index} ${$.UserName}\n兑换奖品：${collect_exchangeAward.result['awardValue']}京豆成功\n\n`
           }
           return
@@ -99,6 +100,7 @@ async function exchangeAward() {
           console.log(`开始兑换奖品：${award['discount']}元无门槛红包`)
           const collect_exchangeAward = await request('collect_exchangeAward', { 'type': award['awardType'] })
           if (collect_exchangeAward.code === '0' && collect_exchangeAward.result) {
+            console.log(`兑换：${collect_exchangeAward.result['awardValue']}元无门槛红包成功`)
             allMessage += `京东账号 ${$.index} ${$.UserName}\n兑换奖品：${collect_exchangeAward.result['awardValue']}元无门槛红包成功\n\n`
           }
           return
@@ -109,6 +111,7 @@ async function exchangeAward() {
           console.log(`开始兑换奖品：${award['awardValue']}农场水滴`)
           const collect_exchangeAward = await request('collect_exchangeAward', { 'type': award['awardType'] })
           if (collect_exchangeAward.code === '0' && collect_exchangeAward.result) {
+            console.log(`兑换：${collect_exchangeAward.result['awardValue']}农场水滴成功`)
             allMessage += `京东账号 ${$.index} ${$.UserName}\n兑换奖品：${collect_exchangeAward.result['awardValue']}农场水滴成功\n\n`
           }
         }
