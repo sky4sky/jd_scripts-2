@@ -1,6 +1,6 @@
 /*
 东东水果
-更新时间：2021-11-9
+更新时间：2021-11-23
 活动入口：京东APP我的-更多工具-东东农场
 东东农场活动链接：https://h5.m.jd.com/babelDiy/Zeus/3KSjXqQabiTuD1cJ28QskrpWoBKT/index.html
 已支持IOS双京东账号,Node.js支持N个京东账号
@@ -198,36 +198,36 @@ async function doDailyTask() {
     console.log(`今天已经做过浏览广告任务\n`);
   }
   //去首页逛逛“领京豆”
-  // if ($.farmTask['treasureBoxInit-getBean']) {
-  //   if (!$.farmTask['treasureBoxInit-getBean']['f']) {
-  //     if ($.farmTask['treasureBoxInit-getBean']['status'] === 0) {
-  //       console.log(`开始做 ${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}任务\n`)
-  //       $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":1,"babelChannel":"120","line":"getBean","version":14,"channel":1});
-  //       if ($.getTreasureBoxAwardRes.code === "0") {
-  //         await findBeanScene();
-  //         await $.wait(500);
-  //         $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
-  //         if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
-  //           console.log(`领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
-  //         } else {
-  //           console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
-  //         }
-  //       } else {
-  //         console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
-  //       }
-  //     } else if ($.farmTask['treasureBoxInit-getBean']['status'] === 1) {
-  //       console.log(`任务已完成，水滴未领取，开始领取水滴\n`)
-  //       $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
-  //       if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
-  //         console.log(`领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
-  //       } else {
-  //         console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
-  //       }
-  //     }
-  //   } else {
-  //     console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}已完成\n`)
-  //   }
-  // }
+  if ($.farmTask['treasureBoxInit-getBean']) {
+    if (!$.farmTask['treasureBoxInit-getBean']['f']) {
+      if ($.farmTask['treasureBoxInit-getBean']['status'] === 0) {
+        console.log(`开始做 ${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}任务\n`)
+        $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":1,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+        if ($.getTreasureBoxAwardRes.code === "0") {
+          await beanTaskList();
+          await $.wait(500);
+          $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+          if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
+            console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}任务领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
+          } else {
+            console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+          }
+        } else {
+          console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+        }
+      } else if ($.farmTask['treasureBoxInit-getBean']['status'] === 1) {
+        console.log(`任务已完成，水滴未领取，开始领取水滴\n`)
+        $.getTreasureBoxAwardRes = await request('ddnc_getTreasureBoxAward', {"type":2,"babelChannel":"120","line":"getBean","version":14,"channel":1});
+        if ($.getTreasureBoxAwardRes && $.getTreasureBoxAwardRes.code === "0") {
+          console.log(`领取成功，获得水滴：${$.getTreasureBoxAwardRes['waterGram']}g\n`);
+        } else {
+          console.log(`领取失败：${$.toStr($.getTreasureBoxAwardRes)}\n`);
+        }
+      }
+    } else {
+      console.log(`${$.farmTask['treasureBoxInit-getBean']['taskMainTitle']}已完成\n`)
+    }
+  }
   if (!$.farmTask.gotThreeMealInit.f) {
     //
     await gotThreeMealForFarm();
@@ -262,11 +262,11 @@ async function doDailyTask() {
   await getExtraAward();//领取额外水滴奖励
   await turntableFarm()//天天抽奖得好礼
 }
-function findBeanScene() {
+function beanTaskList() {
   return new Promise(resolve => {
     const options = {
-      "url": "https://api.m.jd.com/client.action?functionId=findBeanScene",
-      "body": "area=18_1501_1504_57336&body=%7B%22rnClient%22%3A%222%22%2C%22viewChannel%22%3A%22AppHome%22%2C%22source%22%3A%22AppHome%22%2C%22rnVersion%22%3A%224.7%22%7D&build=167802&client=apple&clientVersion=10.1.2&d_brand=apple&d_model=iPhone11%2C8&eid=eidIf12a8121eas2urxgGc%2BzS5%2BUYGu1Nbed7bq8YY%2BgPd0Q0t%2BiviZdQsxnK/HTA7AxZzZBrtu1ulwEviYSV3QUuw2XHHC%2BPFHdNYx1A/3Zt8xYR%2Bd3&isBackground=N&joycious=126&lang=zh_CN&networkType=wifi&networklibtype=JDNetworkBaseAF&openudid=88732f840b77821b345bf07fd71f609e6ff12f43&osVersion=14.7.1&partner=apple&rfs=0000&scope=11&screen=828%2A1792&sign=942e05c96e7fbd944b695fdf27f3d69a&st=1631583596623&sv=120&uemps=0-0&uts=0f31TVRjBSt6U6blB/IaCTHXfJdTG4zeMVQa4V9LFDmEFuBkph78Snx8BQ1FcmitzeQIQWwBlVj%2BTL6J6WAuFLHZ4jXYF%2BT2yba4qJ/kVXp93djRgcdyVnXv8OCnEOON4CZwYXIqz5fvr2PGIKV5nSsKhQ7qeL8lJtRbEIaRnOEi839%2BjQFzUqqCnXa0GqLzaPekWwPRnbm4IBfZ27o4lA%3D%3D&uuid=hjudwgohxzVu96krv/T6Hg%3D%3D&wifiBssid=f7754c40c09909dc5fccf03e8d7e39d4",
+      "url": "https://api.m.jd.com/client.action?functionId=beanTaskList",
+      "body": "body=%7B%22viewChannel%22%3A%22AppHome%22%7D&build=167853&client=apple&clientVersion=10.2.0&d_brand=apple&d_model=iPhone11%2C8&ef=1&eid=eidIf12a8121eas2urxgGc%2BzS5%2BUYGu1Nbed7bq8YY%2BgPd0Q0t%2BiviZdQsxnK/HTA7AxZzZBrtu1ulwEviYSV3QUuw2XHHC%2BPFHdNYx1A/3Zt8xYR%2Bd3&ep=%7B%22ciphertype%22%3A5%2C%22cipher%22%3A%7B%22screen%22%3A%22ENS4AtO3EJS%3D%22%2C%22osVersion%22%3A%22CJGkDy4n%22%2C%22openudid%22%3A%22ENq3CzTwENGmYtc3ENSnYtC0DWTwCNdwZNcnZtYmEWU2ZwYnCwY0Cm%3D%3D%22%2C%22area%22%3A%22CJvpCJYmCV81CNS1EP82Ctq1EK%3D%3D%22%2C%22uuid%22%3A%22aQf1ZRdxb2r4ovZ1EJZhcxYlVNZSZz09%22%7D%2C%22ts%22%3A1637625634%2C%22hdid%22%3A%22JM9F1ywUPwflvMIpYPok0tt5k9kW4ArJEU3lfLhxBqw%3D%22%2C%22version%22%3A%221.0.3%22%2C%22appname%22%3A%22com.360buy.jdmobile%22%2C%22ridx%22%3A-1%7D&ext=%7B%22prstate%22%3A%220%22%7D&isBackground=N&joycious=117&lang=zh_CN&networkType=4g&networklibtype=JDNetworkBaseAF&partner=apple&rfs=0000&scope=11&sign=778b3d3d83e0d3f45508a958f306abda&st=1637627411874&sv=101&uemps=0-0&uts=0f31TVRjBSsqndu4/jgUPz6uymy50MQJ1DpIH6AlcMry0eQsMwEN/GgP2FpcEJvoNVODK8ho6G6xfFEYSmOOdwauVOUqIQFPdxhcdWdM05U%2BMN5h6umteQ78SpJGXOymjKiTiGjvSOiTpoqO8k%2BT6stsfe0WS9QQ41HfWeVF6cdpDTzsmufz0XDdJ6CcltPUazK5UqRSuo0UyDMBmw/oWg%3D%3D",
       "headers": {
         "Cookie": cookie,
         "Host": "api.m.jd.com",
@@ -282,8 +282,9 @@ function findBeanScene() {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
+          console.log(`${$.name} beanTaskList API请求失败，请检查网路重试`)
         } else {
+          // console.log('data-----beanTaskList', data)
           data = $.toObj(data);
         }
       } catch (e) {
