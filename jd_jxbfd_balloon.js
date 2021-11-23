@@ -69,7 +69,7 @@ async function main() {
     await $.wait(1000);
     await Promise.all([
       // EmployTourGuideFun(),//雇佣导游
-      SpeedUp(),//热气球接待游客
+      // SpeedUp(),//热气球接待游客
       buildAction(),//收集建筑京币
     ]);
   } catch (e) {
