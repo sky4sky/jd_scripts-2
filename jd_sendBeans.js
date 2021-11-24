@@ -56,7 +56,7 @@ if ($.isNode()) {
   let openCount = Math.floor((Number(cookiesArr.length) - 1) / Number($.completeNumbers));
   if (openCount === Infinity) openCount = 0;
   console.log(`\n共有${cookiesArr.length}个账号，前${openCount}个账号可以开团\n`);
-  if (!openCount) return
+  // if (!openCount) return
   $.openTuanList = [];
   console.log(`===============================前${openCount}个账号开始开团=====================\n`);
   for (let i = 0; i < cookiesArr.length && i < openCount; i++) {
@@ -356,8 +356,10 @@ async function rewardMain() {
       if ($.myRewardList[i].status === 3) {
         $.rewardRecordId = $.myRewardList[i].id;
         console.log(`${$.time('yyyy-MM-dd HH:mm:ss.S', $.myRewardList[i]['createdDate'])} ${$.myRewardList[i].beanQuantity}京豆未领取，开始领取！`);
-        if ($.myRewardList[i].beanQuantity) $.beans += parseInt($.myRewardList[i].beanQuantity);
-        rewardBean();
+        const rewardBeanRes = rewardBean();
+        if (rewardBeanRes.success) {
+          if ($.myRewardList[i].beanQuantity) $.beans += parseInt($.myRewardList[i].beanQuantity);
+        }
         await $.wait(3000);
       } else if ($.myRewardList[i].status === 4) {
         console.log(`${$.myRewardList[i]['subtitle']} 已领取${$.myRewardList[i].beanQuantity}个京豆`);
@@ -431,7 +433,7 @@ async function rewardBean() {
         if (data.success) {
           console.log(`领取豆子奖励成功`);
         } else {
-          console.log(JSON.stringify(data));
+          console.log('领取豆子奖励失败：', JSON.stringify(data));
         }
       } catch (e) {
         console.log(e);
