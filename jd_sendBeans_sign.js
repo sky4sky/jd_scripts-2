@@ -18,20 +18,12 @@ let cookiesArr = [], cookie = '', message = '';
 $.invite_pins = [];
 const activityList = [
   {
-    turnTableId: 1310,
-    shopId: 58661
-  },
-  {
     turnTableId: 1247,
     shopId: 1000102789
   },
   {
     turnTableId: 1082,
     shopId: 1000004123
-  },
-  {
-    turnTableId: 1220,
-    shopId: 191929
   },
   {
     turnTableId: 1162,
