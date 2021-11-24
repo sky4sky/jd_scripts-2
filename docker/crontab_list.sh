@@ -38,8 +38,6 @@
 35 */1 * * * node /scripts/jd_cow_mengniu.js >> /scripts/logs/jd_cow_mengniu.log 2>&1
 # 清风云养树
 15 4,15 * * * node /scripts/jd_tree.js >> /scripts/logs/jd_tree.log 2>&1
-# 选品官 2021年11月14日结束
-20 0,21 * * * node /scripts/jd_selectionOfficer.js >> /scripts/logs/jd_selectionOfficer.log 2>&1
 # 奔跑的小美
 31 3,4 1-30 11 * node /scripts/jd_meidi.js >> /scripts/logs/jd_meidi.log 2>&1
 ##############长期活动##############
