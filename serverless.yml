@@ -22,12 +22,12 @@ inputs:
           cronExpression: "0 0 0 * * * *"
           enable: true
           argument: jd_bean_sign
-    - timer: #东东超市兑换奖品 #摇京豆 #京东汽车兑换 #东东健康兑换商品 #内容鉴赏官 #京东小家电签到 #连续签到送大额京豆
+    - timer: #东东超市兑换奖品 #摇京豆 #京东汽车兑换 #东东健康兑换商品 #内容鉴赏官 #连续签到送大额京豆
         parameters:
-          name: blueCoin_clublottery_carexchange_healthexchange_jsg_xjdSign_sendBeanssign
+          name: blueCoin_clublottery_carexchange_healthexchange_jsg_sendBeanssign
           cronExpression: "0 0 0 * * * *"
           enable: true
-          argument: jd_blueCoin&jd_club_lottery&jd_car_exchange&jd_health_exchange&jd_jsg&jd_xjdSign&jd_sendBeans_sign
+          argument: jd_blueCoin&jd_club_lottery&jd_car_exchange&jd_health_exchange&jd_jsg&jd_sendBeans_sign
     - timer: #东东农场 #东东萌宠 #京东极速版签到 #金榜创造营 #美食馆瓜分京豆 #特务Z #vivo活动 #逛好物赚京豆
         parameters:
           name: fruit_pet_speedsign_goldcreator_foodRunning_productBrand_vivo_ifanli
@@ -64,18 +64,18 @@ inputs:
           cronExpression: "0 15 */1 * * * *"
           enable: true
           argument: jd_superMarket&jd_syj&jd_jxbfd_balloon&jd_jxbfd_pear_game
-    - timer: #京豆变动通知 #京东排行榜 #领京豆额外奖励 #京东到家鲜豆任务 #京东会员卡 #京东保价 #芥么小程序签到领现金 #伊利养牛 #清风云养树 #选品官 #京东半年红包明细
+    - timer: #京豆变动通知 #京东排行榜 #领京豆额外奖励 #京东到家鲜豆任务 #京东会员卡 #京东保价 #芥么小程序签到领现金 #伊利养牛 #清风云养树 #京东半年红包明细
         parameters:
-          name: beanchange_rankingList_beanhome_jddjdailyTask_unbind_price_jmsign_cow_tree_selectionOfficer_halfYearRed
+          name: beanchange_rankingList_beanhome_jddjdailyTask_unbind_price_jmsign_cow_tree_halfYearRed
           cronExpression: "0 30 7 * * * *"
           enable: true
-          argument: jd_bean_change&jd_rankingList&jd_bean_home&jd_jddj_dailyTask&jd_unbind&jd_price&jd_jm_sign&jd_cow&jd_tree&jd_selectionOfficer&jd_halfYearRed
-    - timer: #金融养猪 #京东快递 #京东赚赚 #京东极速版红包 #领金贴 #送豆得豆 #汪汪乐园 #领京豆 #京喜签到 #东东世界 #京东小家福利社签到 #集魔方 #限时抢京豆
+          argument: jd_bean_change&jd_rankingList&jd_bean_home&jd_jddj_dailyTask&jd_unbind&jd_price&jd_jm_sign&jd_cow&jd_tree&jd_halfYearRed
+    - timer: #金融养猪 #京东快递 #京东赚赚 #京东极速版红包 #领金贴 #送豆得豆 #汪汪乐园 #领京豆 #京喜签到 #东东世界 #京东小家福利社签到 #集魔方
         parameters:
-          name: pigPet_kd_jdzz_speedredpocke_jintie_sendBeans_joypark_ljd_jxsign_ddworld_flsSign_collectmf_xsqjd
+          name: pigPet_kd_jdzz_speedredpocke_jintie_sendBeans_joypark_ljd_jxsign_ddworld_flsSign_collectmf
           cronExpression: "0 3 1 * * * *"
           enable: true
-          argument: jd_pigPet&jd_kd&jd_jdzz&jd_speed_redpocke&jd_jin_tie&jd_sendBeans&jd_joy_park&jd_ljd&jx_sign&jd_ddworld&jd_flsSign&jd_collect_mf&jd_xsqjd
+          argument: jd_pigPet&jd_kd&jd_jdzz&jd_speed_redpocke&jd_jin_tie&jd_sendBeans&jd_joy_park&jd_ljd&jx_sign&jd_ddworld&jd_flsSign&jd_collect_mf
 
     #- timer: #签到图形验证 #宠汪汪喂食 #宠汪汪 #宠汪汪积分兑换京豆 #宠汪汪偷好友积分与喂食
         #parameters:
