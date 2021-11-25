@@ -1,4 +1,5 @@
 /*
+活动地址：https://lzdz1-isv.isvjcloud.com/dingzhi/qingfeng/planttrees/activity/dz2105100000169401?activityId=dz2105100000169401&shareUuid=
 31 6,18 * * * jd_tree.js
  */
 const $ = new Env('云养树');

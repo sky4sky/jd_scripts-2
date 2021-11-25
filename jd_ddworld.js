@@ -156,7 +156,7 @@ async function doTask(){
             continue;
         }
         if($.oneTask.taskType === 12){
-            $.info = $.taskDetailList;
+            $.info = $.taskDetailList[i];
             console.log(`任务：${$.oneTask.taskName} 去执行`);
             await takePostRequest('do_task');
             await $.wait(1000);

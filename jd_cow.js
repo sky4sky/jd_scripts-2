@@ -1,4 +1,5 @@
 /*
+活动地址：https://lzdz-isv.isvjcloud.com/dingzhi/yili/yangniu/activity?activityId=dz2103100001340201&shareUuid=
 11 1,21 * * * jd_cow.js
  */
 const $ = new Env('伊利云养牛');
